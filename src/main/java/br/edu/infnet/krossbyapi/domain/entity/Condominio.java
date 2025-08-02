@@ -47,4 +47,19 @@ public class Condominio extends EntidadeBase{
     private String telefoneSindico;
 
     protected Condominio() {}
+
+    @Override
+    public String toString() {
+        return "Condominio{" +
+                "nomeCondominio='" + nomeCondominio + '\'' +
+                ", tipoCondominio=" + tipoCondominio +
+                ", totalUnidades=" + totalUnidades +
+                ", cnpj='" + cnpj + '\'' +
+                ", telefoneContato1='" + telefoneContato1 + '\'' +
+                ", telefoneContato2='" + telefoneContato2 + '\'' +
+                ", endereco=" + endereco +
+                ", nomeSindico='" + nomeSindico + '\'' +
+                ", telefoneSindico='" + telefoneSindico + '\'' +
+                '}';
+    }
 }

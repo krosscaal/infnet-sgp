@@ -36,4 +36,18 @@ public class Endereco implements Serializable {
     private String estado;
     @Column(length = 8)
     private String uf;
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "logradouro='" + logradouro + '\'' +
+                ", numero='" + numero + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", cep='" + cep + '\'' +
+                ", estado='" + estado + '\'' +
+                ", uf='" + uf + '\'' +
+                '}';
+    }
 }
