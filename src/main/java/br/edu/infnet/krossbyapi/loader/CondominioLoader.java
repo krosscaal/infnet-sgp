@@ -9,17 +9,20 @@ import br.edu.infnet.krossbyapi.domain.entity.Endereco;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoCondominio;
 import br.edu.infnet.krossbyapi.domain.record.CondominioRecord;
 import br.edu.infnet.krossbyapi.service.CondominioService;
+import org.jboss.logging.Logger;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
 
 @Component
 public class CondominioLoader implements ApplicationRunner {
 
     private final CondominioService condominioService;
+    Logger log = Logger.getLogger(getClass().getName());
 
     public CondominioLoader(CondominioService condominioService) {
         this.condominioService = condominioService;
@@ -56,15 +59,20 @@ public class CondominioLoader implements ApplicationRunner {
                         tipoCondominio,
                         Integer.valueOf(campos[2]),
                         !campos[3].equalsIgnoreCase("null")? campos[3]: null,
-                        !campos[4].equalsIgnoreCase("null")? campos[4] : null, campos[5], endereco, campos[14], campos[15]);
+                        !campos[4].equalsIgnoreCase("null")? campos[4] : null,
+                        campos[5],
+                        endereco,
+                        campos[14],
+                        campos[15]);
 
                 condominioService.salvar(condominioRecord);
 
-                System.out.println(condominioRecord.toString());
                 linha = lerArquivo.readLine();
             }
 
         }
+        List<CondominioRecord> listaCondominio = condominioService.listarTodos();
+        listaCondominio.forEach(condominioRecord -> log.info(condominioRecord.toString()));
 
 
     }
