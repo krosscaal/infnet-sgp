@@ -28,42 +28,44 @@ public class CondominioLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         FileReader arquivo = new FileReader("condominio.txt");
-        BufferedReader lerArquivo = new BufferedReader(arquivo);
 
-        String linha = lerArquivo.readLine();
+        try (BufferedReader lerArquivo = new BufferedReader(arquivo)) {
+            String linha = lerArquivo.readLine();
 
-        String[] campos = null;
+            String[] campos = null;
 
-        while (linha != null) {
-            campos = linha.split(";");
+            while (linha != null) {
+                campos = linha.split(";");
 
-            Endereco endereco = new Endereco();
-            endereco.setLogradouro(campos[6]);
-            endereco.setNumero(campos[7]);
-            endereco.setComplemento(campos[8]);
-            endereco.setBairro(campos[9]);
-            endereco.setCidade(campos[10]);
-            endereco.setCep(campos[11]);
-            endereco.setEstado(campos[12]);
-            endereco.setUf(campos[13]);
+                Endereco endereco = new Endereco();
+                endereco.setLogradouro(campos[6]);
+                endereco.setNumero(campos[7]);
+                endereco.setComplemento(campos[8]);
+                endereco.setBairro(campos[9]);
+                endereco.setCidade(campos[10]);
+                endereco.setCep(campos[11]);
+                endereco.setEstado(campos[12]);
+                endereco.setUf(campos[13]);
 
-            int ordinal = Integer.parseInt(campos[1]);
-            EnumTipoCondominio tipoCondominio = EnumTipoCondominio.valueOfTipoDeCondominio(ordinal);
+                int ordinal = Integer.parseInt(campos[1]);
+                EnumTipoCondominio tipoCondominio = EnumTipoCondominio.valueOfTipoDeCondominio(ordinal);
 
-            CondominioRecord condominioRecord = new CondominioRecord(
-                    null,
-                    campos[0],
-                    tipoCondominio,
-                    Integer.valueOf(campos[2]),
-                    !campos[3].equalsIgnoreCase("null")? campos[3]: null,
-                    !campos[4].equalsIgnoreCase("null")? campos[4] : null, campos[5], endereco, campos[14], campos[15]);
+                CondominioRecord condominioRecord = new CondominioRecord(
+                        null,
+                        campos[0],
+                        tipoCondominio,
+                        Integer.valueOf(campos[2]),
+                        !campos[3].equalsIgnoreCase("null")? campos[3]: null,
+                        !campos[4].equalsIgnoreCase("null")? campos[4] : null, campos[5], endereco, campos[14], campos[15]);
 
-            condominioService.salvar(condominioRecord);
+                condominioService.salvar(condominioRecord);
 
-            System.out.println(condominioRecord.toString());
-            linha = lerArquivo.readLine();
+                System.out.println(condominioRecord.toString());
+                linha = lerArquivo.readLine();
+            }
+
         }
-        lerArquivo.close();
+
 
     }
 }

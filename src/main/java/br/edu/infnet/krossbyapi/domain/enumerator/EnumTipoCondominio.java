@@ -15,4 +15,7 @@ public enum EnumTipoCondominio {
     VERTICAL("Vertical");
 
     private final String tipoDeCondominio;
+    public static EnumTipoCondominio valueOfTipoDeCondominio(final int ordinal) {
+        return values()[ordinal];
+    }
 }
