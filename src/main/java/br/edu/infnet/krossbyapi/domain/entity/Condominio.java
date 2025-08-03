@@ -50,16 +50,17 @@ public class Condominio extends EntidadeBase{
 
     @Override
     public String toString() {
-        return "Condominio{" +
-                "nomeCondominio='" + nomeCondominio + '\'' +
-                ", tipoCondominio=" + tipoCondominio +
-                ", totalUnidades=" + totalUnidades +
-                ", cnpj='" + cnpj + '\'' +
-                ", telefoneContato1='" + telefoneContato1 + '\'' +
-                ", telefoneContato2='" + telefoneContato2 + '\'' +
-                ", endereco=" + endereco +
-                ", nomeSindico='" + nomeSindico + '\'' +
-                ", telefoneSindico='" + telefoneSindico + '\'' +
-                '}';
+        StringBuilder sbCondominio = new StringBuilder("INFORMAÇÕES:\n");
+        sbCondominio.append("id: ").append(getId()).append("\n");
+        sbCondominio.append("Condominio: ").append(nomeCondominio).append("\n");
+        sbCondominio.append("TipoCondominio: ").append(tipoCondominio.getTipoDeCondominio()).append("\n");
+        sbCondominio.append("TotalUnidades: ").append(totalUnidades).append("\n");
+        sbCondominio.append("Cnpj: ").append(cnpj).append("\n");
+        sbCondominio.append("TelefoneContato1: ").append(telefoneContato1).append("\n");
+        sbCondominio.append("TelefoneContato2: ").append(telefoneContato2).append("\n");
+        sbCondominio.append("Endereco: ").append(endereco);
+        sbCondominio.append("NomeSindico: ").append(nomeSindico).append("\n");
+        sbCondominio.append("telefoneSindico: ").append(telefoneSindico).append("\n");
+        return sbCondominio.toString();
     }
 }

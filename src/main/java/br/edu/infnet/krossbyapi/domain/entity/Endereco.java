@@ -39,15 +39,15 @@ public class Endereco implements Serializable {
 
     @Override
     public String toString() {
-        return "Endereco{" +
-                "logradouro='" + logradouro + '\'' +
-                ", numero='" + numero + '\'' +
-                ", complemento='" + complemento + '\'' +
-                ", bairro='" + bairro + '\'' +
-                ", cidade='" + cidade + '\'' +
-                ", cep='" + cep + '\'' +
-                ", estado='" + estado + '\'' +
-                ", uf='" + uf + '\'' +
-                '}';
+        StringBuilder sbEndereco = new StringBuilder();
+        sbEndereco.append("Logradouro: ").append(logradouro).append("\n");
+        sbEndereco.append("Numero: ").append(numero).append("\n");
+        sbEndereco.append("Complemento: ").append(complemento).append("\n");
+        sbEndereco.append("Bairro: ").append(bairro).append("\n");
+        sbEndereco.append("Cidade: ").append(cidade).append("\n");
+        sbEndereco.append("CEP: ").append(cep).append("\n");
+        sbEndereco.append("Estado: ").append(estado).append("\n");
+        sbEndereco.append("UF: ").append(uf).append("\n");
+        return sbEndereco.toString();
     }
 }

@@ -14,10 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class CondominioService implements ServiceBase<CondominioRecord, Long>{
     private final CondominioRepository repository;
+    private final Map<Long, Condominio> condominioMap = new ConcurrentHashMap<Long, Condominio>();
+    private final AtomicLong condominioId = new AtomicLong(10);
 
     public CondominioService(CondominioRepository repository) {
         this.repository = repository;
@@ -92,5 +97,19 @@ public class CondominioService implements ServiceBase<CondominioRecord, Long>{
                 obj.getEndereco(),
                 obj.getNomeSindico(),
                 obj.getTelefoneSindico());
+    }
+
+    public CondominioRecord salvarNoMap(CondominioRecord condominioRecord) {
+        Condominio condominio = CondominioFactory.criarCondominio(condominioRecord);
+
+        condominio.setId(condominioId.getAndIncrement());
+
+        condominioMap.put(condominio.getId(), condominio);
+
+        return entityToRecord(condominio);
+    }
+
+    public List<Condominio> listarTodosDoMap() {
+        return new ArrayList<>(condominioMap.values());
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
 
 @Component
 public class CondominioLoader implements ApplicationRunner {
@@ -30,6 +29,7 @@ public class CondominioLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
         FileReader arquivo = new FileReader("condominio.txt");
 
         try (BufferedReader lerArquivo = new BufferedReader(arquivo)) {
@@ -66,13 +66,17 @@ public class CondominioLoader implements ApplicationRunner {
                         campos[15]);
 
                 condominioService.salvar(condominioRecord);
+                condominioService.salvarNoMap(condominioRecord);
 
                 linha = lerArquivo.readLine();
             }
 
         }
-        List<CondominioRecord> listaCondominio = condominioService.listarTodos();
-        listaCondominio.forEach(condominioRecord -> log.info(condominioRecord.toString()));
+        log.info("Lista Condominio do Banco de dados");
+        condominioService.listarTodos().forEach(condominioRecord -> log.info(condominioRecord.toString()));
+
+        log.info("Lista de Condominios do Map");
+        condominioService.listarTodosDoMap().forEach(condominio -> log.info(condominio.toString()));
 
 
     }
