@@ -24,7 +24,7 @@ import lombok.Setter;
 public class AcessoCondominio extends EntidadeBase{
 
     @Embedded
-    private Usuario usuario;
+    private Usuario usuarioVisitante;
 
     @Enumerated(EnumType.ORDINAL)
     private EnumTipoAcesso tipoAcesso;
@@ -33,12 +33,12 @@ public class AcessoCondominio extends EntidadeBase{
     private String cartaoAcesso;
 
     @OneToOne
-    @JoinColumn(name = "moradia_id", referencedColumnName = "id")
-    private Moradia moradia;
+    @JoinColumn(name = "moradia_id_destino", referencedColumnName = "id")
+    private Moradia moradiaDestinoVisitante;
 
     @OneToOne
-    @JoinColumn(name = "autorizado_por_id", referencedColumnName = "id")
-    private UsuarioCondominio autorizado;
+    @JoinColumn(name = "autorizado_por_usuario_id", referencedColumnName = "id")
+    private UsuarioCondominio usuarioAutorizacao;
 
     @Column(length = 150)
     private String observacao;
