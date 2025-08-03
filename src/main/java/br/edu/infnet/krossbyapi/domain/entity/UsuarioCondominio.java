@@ -12,10 +12,14 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,7 +39,7 @@ public class UsuarioCondominio extends EntidadeBase {
     @Enumerated(EnumType.STRING)
     private EnumAtivo ativo;
 
-    @OneToOne(mappedBy = "morador")
-    private Moradia moradia;
+    @OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY)
+    private List<Moradia> moradias = new ArrayList<>();
 
 }

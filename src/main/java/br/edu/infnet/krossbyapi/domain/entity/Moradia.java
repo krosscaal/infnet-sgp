@@ -33,7 +33,7 @@ public class Moradia extends EntidadeBase {
     @JoinColumn(name = "propietario_id")
     private UsuarioCondominio propietario;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "morador_id", referencedColumnName = "id")
     private UsuarioCondominio morador;
 
