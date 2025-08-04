@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class CondominioService implements ServiceBase<CondominioRecord, Long>{
     private final CondominioRepository repository;
-    private final Map<Long, Condominio> condominioMap = new ConcurrentHashMap<Long, Condominio>();
+    private final Map<Long, Condominio> condominioMap = new ConcurrentHashMap<>();
     private final AtomicLong condominioId = new AtomicLong(10);
 
     public CondominioService(CondominioRepository repository) {
