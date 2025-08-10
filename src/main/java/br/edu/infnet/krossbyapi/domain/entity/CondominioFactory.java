@@ -5,6 +5,7 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.domain.record.CondominioRecord;
 import br.edu.infnet.krossbyapi.util.GeralUtils;
@@ -33,6 +34,7 @@ public class CondominioFactory {
         condominioEntity.setEndereco(endereco);
         condominioEntity.setNomeSindico(condominioRecord.nomeSindico().toUpperCase(Locale.ROOT));
         condominioEntity.setTelefoneSindico(condominioRecord.telefoneSindico());
+        condominioEntity.setSituacao(EnumTipoSituacao.ATIVO);
 
         return condominioEntity;
     }

@@ -6,6 +6,7 @@
 package br.edu.infnet.krossbyapi.loader;
 
 import br.edu.infnet.krossbyapi.domain.entity.Endereco;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoCondominio;
 import br.edu.infnet.krossbyapi.domain.record.CondominioRecord;
 import br.edu.infnet.krossbyapi.service.CondominioService;
@@ -50,8 +51,12 @@ public class CondominioLoader implements ApplicationRunner {
                 endereco.setEstado(campos[12]);
                 endereco.setUf(campos[13]);
 
-                int ordinal = Integer.parseInt(campos[1]);
-                EnumTipoCondominio tipoCondominio = EnumTipoCondominio.valueOfTipoDeCondominio(ordinal);
+                int ordinalTipoCondominio = Integer.parseInt(campos[1]);
+                EnumTipoCondominio tipoCondominio = EnumTipoCondominio.valueOfTipoDeCondominio(ordinalTipoCondominio);
+
+                int ordinalAtivo = Integer.parseInt(campos[16]);
+                EnumTipoSituacao ativo = EnumTipoSituacao.valueOfAtivo(ordinalAtivo);
+
 
                 CondominioRecord condominioRecord = new CondominioRecord(
                         null,
@@ -63,10 +68,11 @@ public class CondominioLoader implements ApplicationRunner {
                         campos[5],
                         endereco,
                         campos[14],
-                        campos[15]);
+                        campos[15],
+                        ativo);
 
-                condominioService.salvar(condominioRecord);
-                condominioService.salvarNoMap(condominioRecord);
+                condominioService.incluir(condominioRecord);
+                condominioService.incluirMap(condominioRecord);
 
                 linha = lerArquivo.readLine();
             }
@@ -76,7 +82,7 @@ public class CondominioLoader implements ApplicationRunner {
         condominioService.listarTodos().forEach(condominioRecord -> log.info(condominioRecord.toString()));
 
         log.info("Lista de Condominios do Map");
-        condominioService.listarTodosDoMap().forEach(condominio -> log.info(condominio.toString()));
+        condominioService.listarTodosMap().forEach(condominio -> log.info(condominio.toString()));
 
 
     }

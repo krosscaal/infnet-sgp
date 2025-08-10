@@ -5,7 +5,7 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
-import br.edu.infnet.krossbyapi.domain.enumerator.EnumAtivo;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoUsuarioSistema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -20,7 +20,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "tb_usuario_sistema")
-public class UsuarioSistema extends EntidadeBase{
+public class UsuarioSistema extends EntidadeBase {
 
     @Embedded
     private Usuario usuario;
@@ -38,5 +38,5 @@ public class UsuarioSistema extends EntidadeBase{
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private EnumAtivo ativo;
+    private EnumTipoSituacao ativo;
 }

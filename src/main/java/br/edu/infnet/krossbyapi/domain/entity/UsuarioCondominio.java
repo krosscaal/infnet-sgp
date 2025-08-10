@@ -5,7 +5,7 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
-import br.edu.infnet.krossbyapi.domain.enumerator.EnumAtivo;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoResidente;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -37,7 +37,7 @@ public class UsuarioCondominio extends EntidadeBase {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private EnumAtivo ativo;
+    private EnumTipoSituacao ativo;
 
     @OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY)
     private List<Moradia> moradias = new ArrayList<>();

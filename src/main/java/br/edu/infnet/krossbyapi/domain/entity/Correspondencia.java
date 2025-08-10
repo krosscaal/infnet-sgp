@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "tb_correspondencia")
-public class Correspondencia extends EntidadeBase{
+public class Correspondencia extends EntidadeBase {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "moradia_da_entrega",

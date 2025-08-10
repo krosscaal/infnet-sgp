@@ -20,8 +20,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_acesso_condominio")
-public class AcessoCondominio extends EntidadeBase{
+@Table(name = "tb_usuario_visitante")
+public class UsuarioVisitante extends EntidadeBase {
 
     @Embedded
     private Usuario usuarioVisitante;

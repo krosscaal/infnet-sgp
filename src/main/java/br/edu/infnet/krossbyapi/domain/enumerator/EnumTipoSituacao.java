@@ -10,9 +10,12 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum EnumAtivo {
-    SIM("Sim"),
-    NAO("Não");
+public enum EnumTipoSituacao {
+    ATIVO("Ativo"),
+    INATIVO("Inativo");
 
     private final String descricao;
+    public static EnumTipoSituacao valueOfAtivo(final int ordinal) {
+        return values()[ordinal];
+    }
 }

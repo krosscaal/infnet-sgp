@@ -5,6 +5,7 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoCondominio;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -19,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "tb_condominio")
-public class Condominio extends EntidadeBase{
+public class Condominio extends EntidadeBase {
     @Column(nullable = false, length = 150)
     private String nomeCondominio;
 
@@ -43,8 +44,12 @@ public class Condominio extends EntidadeBase{
 
     @Column(length = 200)
     private String nomeSindico;
+
     @Column(length = 11)
     private String telefoneSindico;
+
+    @Enumerated(EnumType.ORDINAL)
+    private EnumTipoSituacao situacao;
 
     protected Condominio() {}
 
@@ -58,6 +63,7 @@ public class Condominio extends EntidadeBase{
         sbCondominio.append("Cnpj: ").append(cnpj).append("\n");
         sbCondominio.append("TelefoneContato1: ").append(telefoneContato1).append("\n");
         sbCondominio.append("TelefoneContato2: ").append(telefoneContato2).append("\n");
+        sbCondominio.append("Situacão: ").append(situacao.getDescricao()).append("\n");
         sbCondominio.append("Endereco: ").append(endereco);
         sbCondominio.append("NomeSindico: ").append(nomeSindico).append("\n");
         sbCondominio.append("telefoneSindico: ").append(telefoneSindico).append("\n");

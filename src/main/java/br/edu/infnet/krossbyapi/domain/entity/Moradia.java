@@ -5,7 +5,7 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
-import br.edu.infnet.krossbyapi.domain.enumerator.EnumAtivo;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoMoradia;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,6 +41,6 @@ public class Moradia extends EntidadeBase {
     private String numeroUnidade;
 
     @Enumerated(EnumType.STRING)
-    private EnumAtivo ativo;
+    private EnumTipoSituacao ativo;
 
 }

@@ -6,6 +6,7 @@
 package br.edu.infnet.krossbyapi.domain.record;
 
 import br.edu.infnet.krossbyapi.domain.entity.Endereco;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoCondominio;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,7 +32,9 @@ public record CondominioRecord(
         @Size(max = 100)
         String nomeSindico,
         @Size(max = 11)
-        String telefoneSindico) {
+        String telefoneSindico,
+        @Enumerated(EnumType.ORDINAL)
+        EnumTipoSituacao situacao) {
 
         @Override
         public String toString() {
@@ -43,6 +46,7 @@ public record CondominioRecord(
                 sb.append("Cnpj: ").append(cnpj).append("\n");
                 sb.append("Telefone de Contato 1: ").append(telefoneContato1).append("\n");
                 sb.append("Telefone de Contato 2: ").append(telefoneContato2).append("\n");
+                sb.append("Situação :").append(situacao.getDescricao()).append("\n");
                 sb.append("Endereço: ").append(endereco);
                 sb.append("Nome do Sindico: ").append(nomeSindico).append("\n");
                 sb.append("Telefone do Sindico: ").append(telefoneSindico).append("\n");

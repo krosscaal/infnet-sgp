@@ -22,18 +22,18 @@ public abstract class ControllerBase<T, K> {
 
     @GetMapping(value = "/{id}", produces = {"application/json"})
     public ResponseEntity<T> obter(@PathVariable("id") K id) throws BusinessException {
-        return this.acaoObter(id);
+        return this.acaoBuscarPorId(id);
     }
 
-    protected abstract ResponseEntity<T> acaoObter(K id) throws BusinessException;
+    protected abstract ResponseEntity<T> acaoBuscarPorId(K id) throws BusinessException;
 
 
     @GetMapping(produces = {"application/json"})
     public ResponseEntity<List<T>> listar() {
-        return this.acaoListar();
+        return this.acaoListarTodos();
     }
 
-    protected abstract ResponseEntity<List<T>> acaoListar();
+    protected abstract ResponseEntity<List<T>> acaoListarTodos();
 
     @PostMapping(produces = {"application/json"})
     public ResponseEntity<T> incluir(@RequestBody T dto) throws BusinessException {
@@ -43,16 +43,16 @@ public abstract class ControllerBase<T, K> {
     protected abstract ResponseEntity<T> acaoIncluir(T dto) throws BusinessException;
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<T> atualizar(@PathVariable("id") K id, @RequestBody T dto) throws BusinessException {
-        return this.acaoAtualizar(id, dto);
+    public ResponseEntity<T> alterar(@PathVariable("id") K id, @RequestBody T dto) throws BusinessException {
+        return this.acaoAlterar(id, dto);
     }
 
-    protected abstract ResponseEntity<T> acaoAtualizar(K id, T dto) throws BusinessException;
+    protected abstract ResponseEntity<T> acaoAlterar(K id, T dto) throws BusinessException;
 
     @DeleteMapping(value = "/{id}")
-    public void remover(@PathVariable("id") K id) throws BusinessException {
-        this.acaoRemover(id);
+    public void excluir(@PathVariable("id") K id) throws BusinessException {
+        this.acaoExcluir(id);
     }
 
-    protected abstract void acaoRemover(K id) throws BusinessException;
+    protected abstract void acaoExcluir(K id) throws BusinessException;
 }
