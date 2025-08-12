@@ -43,7 +43,7 @@ public class CondominioFactory {
         endereco.setLogradouro(endereco.getLogradouro() != null ? endereco.getLogradouro().toUpperCase(Locale.ROOT) : null);
         endereco.setComplemento(endereco.getComplemento() != null? endereco.getComplemento().toUpperCase(Locale.ROOT) : null);
         endereco.setBairro(endereco.getBairro() != null ? endereco.getBairro().toUpperCase(Locale.ROOT) : null);
-        endereco.setCidade(endereco.getCidade() != null ? endereco.getCidade().toUpperCase(Locale.ROOT) : null);
+        endereco.setLocalidade(endereco.getLocalidade() != null ? endereco.getLocalidade().toUpperCase(Locale.ROOT) : null);
         endereco.setEstado(endereco.getEstado() != null ? endereco.getEstado().toUpperCase(Locale.ROOT) : null);
         endereco.setUf(endereco.getUf() != null ? endereco.getUf().toUpperCase(Locale.ROOT) : null);
         return endereco;
@@ -88,7 +88,7 @@ public class CondominioFactory {
         if (!GeralUtils.contemNumeros(endereco.getNumero())) {
             throw new BusinessException(String.format("Número do Condomínio é obrigatorio, %s", SOMENTE_NUMEROS));
         }
-        if (endereco.getCidade() == null || endereco.getCidade().trim().isEmpty()) {
+        if (endereco.getLocalidade() == null || endereco.getLocalidade().trim().isEmpty()) {
             throw new BusinessException("Cidade do Condomínio é obrigatorio!!!");
         }
         if (!GeralUtils.contemNumeros(endereco.getCep())) {

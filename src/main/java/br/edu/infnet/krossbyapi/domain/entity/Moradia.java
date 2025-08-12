@@ -43,4 +43,7 @@ public class Moradia extends EntidadeBase {
     @Enumerated(EnumType.STRING)
     private EnumTipoSituacao ativo;
 
+    private String quadraTorreBloco;
+    private String lote;
+
 }

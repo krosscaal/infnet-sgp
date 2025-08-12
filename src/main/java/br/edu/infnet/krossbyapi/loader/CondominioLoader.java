@@ -46,7 +46,7 @@ public class CondominioLoader implements ApplicationRunner {
                 endereco.setNumero(campos[7]);
                 endereco.setComplemento(campos[8]);
                 endereco.setBairro(campos[9]);
-                endereco.setCidade(campos[10]);
+                endereco.setLocalidade(campos[10]);
                 endereco.setCep(campos[11]);
                 endereco.setEstado(campos[12]);
                 endereco.setUf(campos[13]);
