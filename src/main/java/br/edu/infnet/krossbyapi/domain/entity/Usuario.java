@@ -6,7 +6,7 @@
 package br.edu.infnet.krossbyapi.domain.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,13 +15,16 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@Embeddable
-public class Usuario implements Serializable {
+@Entity
+public class Usuario extends EntidadeBase implements Serializable {
     @Serial
     private static final long serialVersionUID = 5405172041950251807L;
 
     @Column(nullable = false, length = 150)
-    private String nomeCompleto;
+    private String nome;
+
+    @Column(nullable = false, length = 150)
+    private String sobreNome;
 
     @Column(length = 11)
     private String cpf;
