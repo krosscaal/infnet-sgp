@@ -82,7 +82,7 @@ public class CondominioService implements ServiceBase<CondominioRecord, Long>{
         }
     }
 
-    private CondominioRecord inativar(Long idCondominio) {
+    public CondominioRecord inativar(Long idCondominio) {
         Condominio condominioObj = this.buscarCondominioPorId(idCondominio);
         if (EnumTipoSituacao.INATIVO.equals(condominioObj.getSituacao())) {
             throw new BusinessException("Condominio já está inativo!");

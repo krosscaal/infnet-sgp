@@ -55,26 +55,37 @@ public class CondominioController extends ControllerBase<CondominioRecord, Long>
     protected void acaoExcluir(Long id) throws BusinessException {
         service.excluir(id);
     }
+    @PatchMapping(value = "/{id}/inativar")
+    protected ResponseEntity<CondominioRecord> acaoInativar(@PathVariable("id") Long id) throws BusinessException {
+        return ResponseEntity.ok(service.inativar(id));
+    }
+
+
     @GetMapping(value = "/map/{id}")
     public Condominio obterPorIdMap(@PathVariable("id") Long idCondominio) {
         return service.buscarPorIdMap(idCondominio);
     }
+
     @GetMapping(value = "/map")
     public List<Condominio> obterListaMap() {
         return service.listarTodosMap();
     }
+
     @PostMapping(value = "/map")
     public Condominio incluirMap(@RequestBody CondominioRecord condominioRecord) throws BusinessException {
         return service.incluirMap(condominioRecord);
     }
+
     @PutMapping(value = "/map/{id}")
     public Condominio alterarMap(@PathVariable("id") Long idCondominio, @RequestBody CondominioRecord dto) throws BusinessException {
         return service.alterarMap(idCondominio, dto);
     }
+
     @DeleteMapping(value = "/map/{id}")
     public void excluirMap(@PathVariable("id") Long idCondominio) throws BusinessException {
         service.excluirMap(idCondominio);
     }
+
     @PatchMapping(value = "/map/{id}/inativar")
     public Condominio inativarMap(@PathVariable("id") Long idCondominio) throws BusinessException {
         return service.inativarMap(idCondominio);
