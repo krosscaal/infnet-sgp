@@ -1,0 +1,4 @@
+usuario 1;usuario propietario;24125008000;null;4199991111;null;0;usuario1@gmail.com;1
+usuario 2;usuario morador;49710278070;null;4199992222;null;1;usuario2@gmail.com;1
+usuario 3;usuario propietario;60918722063;null;4199993333;null;1;usuario3@gmail.com;1
+usuario 4;usuario propietario;85849708006;null;4199994444;null;0;usuario4@gmail.com;1
