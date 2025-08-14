@@ -12,7 +12,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -25,7 +24,7 @@ import lombok.Setter;
 @Table(name = "tb_usuario_sistema")
 public class UsuarioSistema extends EntidadeBase {
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
@@ -42,5 +41,5 @@ public class UsuarioSistema extends EntidadeBase {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private EnumTipoSituacao ativo;
+    private EnumTipoSituacao situacao;
 }

@@ -110,7 +110,7 @@ public class CondominioService implements ServiceBase<CondominioRecord, Long>{
                 obj.getSituacao());
     }
 
-    private void existeEmMap(long idCondominio) {
+    private void existeEmMap(Long idCondominio) {
         if (!this.condominioMap.containsKey(idCondominio)) {
             throw new BusinessException("Condominio não encontrado!");
         }

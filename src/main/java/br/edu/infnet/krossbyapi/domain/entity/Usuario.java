@@ -7,6 +7,7 @@ package br.edu.infnet.krossbyapi.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,4 +38,9 @@ public class Usuario extends EntidadeBase implements Serializable {
 
     @Column(name = "telefone_2", length = 11)
     private String telefone2;
+
+    @Override
+    public String toString() {
+        return String.format("Usuario id:%d %s %s %s %s %s %s ", getId(), nome, sobreNome, cpf, rg, telefone1, telefone2);
+    }
 }

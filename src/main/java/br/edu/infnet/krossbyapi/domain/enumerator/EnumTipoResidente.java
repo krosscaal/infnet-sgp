@@ -15,4 +15,7 @@ public enum EnumTipoResidente {
     MORADOR("Morador");
 
     private final String usuarioResidente;
+    public static EnumTipoResidente valueOfResidente(final int ordinal) {
+        return EnumTipoResidente.values()[ordinal];
+    }
 }

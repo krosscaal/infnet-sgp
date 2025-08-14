@@ -29,7 +29,7 @@ import java.util.List;
 @Table(name = "tb_usuario_condominio")
 public class UsuarioCondominio extends EntidadeBase {
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
@@ -40,9 +40,13 @@ public class UsuarioCondominio extends EntidadeBase {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private EnumTipoSituacao ativo;
+    private EnumTipoSituacao situacao;
 
     @OneToMany(mappedBy = "propietario", fetch = FetchType.LAZY)
     private List<Moradia> moradias = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return String.format("Usuario Condominio N: %d, %s %s %s %s", getId(), getUsuario().toString(), tipoResidente.getUsuarioResidente(), email, situacao.getDescricao());
+    }
 }

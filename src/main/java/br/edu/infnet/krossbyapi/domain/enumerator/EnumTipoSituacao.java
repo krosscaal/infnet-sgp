@@ -11,8 +11,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum EnumTipoSituacao {
-    ATIVO("Ativo"),
-    INATIVO("Inativo");
+    INATIVO("Inativo"),
+    ATIVO("Ativo");
+
 
     private final String descricao;
     public static EnumTipoSituacao valueOfAtivo(final int ordinal) {

@@ -10,13 +10,13 @@ import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoCondominio;
 import br.edu.infnet.krossbyapi.domain.record.CondominioRecord;
 import br.edu.infnet.krossbyapi.service.CondominioService;
-import org.jboss.logging.Logger;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.logging.Logger;
 
 @Component
 public class CondominioLoader implements ApplicationRunner {
