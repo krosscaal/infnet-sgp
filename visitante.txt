@@ -1,0 +1,9 @@
+Pedro;Costa;24125008000;null;4199991111;null;0;40001;1;1;sem observção;1
+Maria;Alves;49710278070;null;4199992222;null;0;40002;5;2;sem observção;1
+Julio;Souza;60918722063;null;4199993333;null;1;40003;10;3;sem observção;1
+Carlos;Costa;24125008000;null;4199991111;null;0;50001;20;1;sem observção;1
+Teresa;Alves;49710278070;null;4199992222;null;4;50002;30;2;sem observção;1
+Julia;Souza;60918722063;null;4199993333;null;1;60001;23;3;autrizddo;1
+Pedro;Suarez;24125008000;null;4199991111;null;3;50003;11;1;sem observção;1
+Maria;Carvalho;49710278070;null;4199992222;null;2;60002;12;2;sem observção;1
+Vera;Alviz;60918722063;null;4199993333;null;0;60004;41;3;sem observção;1

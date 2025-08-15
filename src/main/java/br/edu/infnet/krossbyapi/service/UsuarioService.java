@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class UsuarioService {
-    public static final AtomicLong usuarioId = new AtomicLong(100);
+    public static final AtomicLong usuarioId = new AtomicLong(1000);
 
     public void validarUsuario(Usuario usuario) {
         if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {

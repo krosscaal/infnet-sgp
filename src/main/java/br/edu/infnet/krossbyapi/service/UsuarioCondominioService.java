@@ -23,7 +23,7 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     private final UsuarioCondominioRepository repository;
     private final UsuarioService usuarioService;
     private final Map<Long, UsuarioCondominio> usuarioCondominioMap = new ConcurrentHashMap<>();
-    private final AtomicLong usuarioId = new AtomicLong(10);
+    private final AtomicLong usuarioCondominioId = new AtomicLong(1);
 
     public UsuarioCondominioService(UsuarioCondominioRepository repository, UsuarioService usuarioService) {
         this.repository = repository;
@@ -101,7 +101,7 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     public UsuarioCondominio incluirMap(UsuarioCondominio objeto) {
         usuarioService.validarUsuario(objeto.getUsuario());
         objeto.getUsuario().setId(UsuarioService.usuarioId.getAndIncrement());
-        objeto.setId(usuarioId.getAndIncrement());
+        objeto.setId(usuarioCondominioId.getAndIncrement());
         objeto.setSituacao(EnumTipoSituacao.ATIVO);
         usuarioCondominioMap.put(objeto.getId(), objeto);
         return objeto;

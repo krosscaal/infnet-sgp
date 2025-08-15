@@ -10,6 +10,8 @@ import br.edu.infnet.krossbyapi.domain.entity.UsuarioSistema;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoUsuarioSistema;
 import br.edu.infnet.krossbyapi.service.UsuarioSistemaService;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +24,7 @@ import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoSituacao;
 import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoUsuariosistema;
 
 @Component
-public class UsuarioSistemaLoader implements CommandLineRunner {
+public class UsuarioSistemaLoader implements ApplicationRunner {
 
     private final UsuarioSistemaService usuarioSistemaService;
     Logger log = Logger.getLogger(getClass().getName());
@@ -32,7 +34,7 @@ public class UsuarioSistemaLoader implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(ApplicationArguments args) throws Exception {
         FileReader arquivo = new FileReader("usuario-sistema.txt");
         try (BufferedReader lerArquivo = new BufferedReader(arquivo)) {
             String linha = lerArquivo.readLine();

@@ -6,6 +6,7 @@
 package br.edu.infnet.krossbyapi.domain.entity;
 
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoAcesso;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,16 +34,23 @@ public class Visitante extends EntidadeBase {
     @Column(length = 15)
     private String cartaoAcesso;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "moradia_id_destino", referencedColumnName = "id")
     private Moradia moradiaDestinoVisitante;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "autorizado_por_usuario_id", referencedColumnName = "id")
     private UsuarioCondominio usuarioAutorizacao;
 
     @Column(length = 150)
     private String observacao;
 
+    @Enumerated(EnumType.STRING)
+    private EnumTipoSituacao situacao;
 
+    @Override
+    public String toString() {
+        return String.format("Visitante id:%s %s %s %s %s %s %s %s",
+                getId(), getUsuarioVisitante().toString(), tipoAcesso.getDescricao(), cartaoAcesso, moradiaDestinoVisitante.getNumeroUnidade(), usuarioAutorizacao.getId(), observacao, situacao.getDescricao());
+    }
 }

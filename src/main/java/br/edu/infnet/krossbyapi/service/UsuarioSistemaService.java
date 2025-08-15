@@ -23,7 +23,7 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
     private final UsuarioSistemaRepository repository;
     private final UsuarioService usuarioService;
     private final Map<Long, UsuarioSistema> usuarioSistemaMap = new ConcurrentHashMap<>();
-    private final AtomicLong usuarioId = new AtomicLong(10);
+    private final AtomicLong usuarioSistemaId = new AtomicLong(10);
 
     public UsuarioSistemaService(UsuarioSistemaRepository repository, UsuarioService usuarioService) {
         this.repository = repository;
@@ -109,7 +109,7 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
     public UsuarioSistema incluirMap(UsuarioSistema objeto) {
         this.validarUsuarioSistema(objeto);
         objeto.getUsuario().setId(UsuarioService.usuarioId.getAndIncrement());
-        objeto.setId(usuarioId.getAndIncrement());
+        objeto.setId(usuarioSistemaId.getAndIncrement());
         objeto.setSituacao(EnumTipoSituacao.ATIVO);
         usuarioSistemaMap.put(objeto.getId(), objeto);
         return objeto;
