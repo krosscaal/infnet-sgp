@@ -18,6 +18,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.logging.Logger;
 
+import static br.edu.infnet.krossbyapi.util.GeralUtils.criarUsuario;
+import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoResidente;
+import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoSituacao;
+
 @Component
 public class UsuarioCondominioLoader implements ApplicationRunner {
     private final UsuarioCondominioService usuarioCondominioService;
@@ -30,24 +34,17 @@ public class UsuarioCondominioLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         FileReader arquivo = new FileReader("usuario-condominio.txt");
-        try (arquivo; BufferedReader lerArquivo = new BufferedReader(arquivo)) {
+        try (BufferedReader lerArquivo = new BufferedReader(arquivo)) {
             String linha = lerArquivo.readLine();
             String[] campos = null;
 
             while (linha != null) {
                 campos = linha.split(";");
-                Usuario usuario = new Usuario();
-                usuario.setNome(campos[0]);
-                usuario.setSobreNome(campos[1]);
-                usuario.setCpf(!campos[2].equalsIgnoreCase("null") ? campos[2] : null);
-                usuario.setRg(!campos[3].equalsIgnoreCase("null") ? campos[3] : null);
-                usuario.setTelefone1(!campos[4].equalsIgnoreCase("null") ? campos[4] : null);
-                usuario.setTelefone2(!campos[5].equalsIgnoreCase("null") ? campos[5] : null);
 
-                int ordinalTipoResidente = Integer.parseInt(campos[6]);
-                EnumTipoResidente residente = EnumTipoResidente.valueOfResidente(ordinalTipoResidente);
-                int ordinalAtivo = Integer.parseInt(campos[8]);
-                EnumTipoSituacao situacao = EnumTipoSituacao.valueOfAtivo(ordinalAtivo);
+                Usuario usuario = criarUsuario(campos);
+
+                EnumTipoResidente residente = getTipoResidente(campos[6]);
+                EnumTipoSituacao situacao = getTipoSituacao(campos[8]);
 
                 UsuarioCondominio usuarioCondominio = new UsuarioCondominio();
                 usuarioCondominio.setUsuario(usuario);

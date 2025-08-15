@@ -9,8 +9,11 @@ import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 @Service
 public class UsuarioService {
+    public static final AtomicLong usuarioId = new AtomicLong(100);
 
     public void validarUsuario(Usuario usuario) {
         if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {

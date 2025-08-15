@@ -47,6 +47,7 @@ public class UsuarioCondominio extends EntidadeBase {
 
     @Override
     public String toString() {
-        return String.format("Usuario Condominio N: %d, %s %s %s %s", getId(), getUsuario().toString(), tipoResidente.getUsuarioResidente(), email, situacao.getDescricao());
+        return String.format("Usuario Condominio id:%d, %s %s %s %s",
+                getId(), getUsuario().toString(), tipoResidente.getUsuarioResidente(), email, situacao.getDescricao());
     }
 }

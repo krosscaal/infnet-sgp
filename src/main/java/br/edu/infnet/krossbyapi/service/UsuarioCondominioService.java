@@ -100,6 +100,7 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     @Override
     public UsuarioCondominio incluirMap(UsuarioCondominio objeto) {
         usuarioService.validarUsuario(objeto.getUsuario());
+        objeto.getUsuario().setId(UsuarioService.usuarioId.getAndIncrement());
         objeto.setId(usuarioId.getAndIncrement());
         objeto.setSituacao(EnumTipoSituacao.ATIVO);
         usuarioCondominioMap.put(objeto.getId(), objeto);
@@ -137,7 +138,7 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
         this.usuarioCondominioMap.remove(idObjeto);
     }
 
-    public void verificaExisteEmMap(Long idUsuario) {
+    private void verificaExisteEmMap(Long idUsuario) {
         if (!this.usuarioCondominioMap.containsKey(idUsuario)) {
             throw new BusinessException("USuário não existe.");
         }

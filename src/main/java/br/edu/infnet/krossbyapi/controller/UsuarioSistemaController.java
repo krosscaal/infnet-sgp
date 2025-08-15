@@ -5,9 +5,9 @@
 
 package br.edu.infnet.krossbyapi.controller;
 
-import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
+import br.edu.infnet.krossbyapi.domain.entity.UsuarioSistema;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
-import br.edu.infnet.krossbyapi.service.UsuarioCondominioService;
+import br.edu.infnet.krossbyapi.service.UsuarioSistemaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,31 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/usuario-condominio")
-public class UsuarioCondominioController extends ControllerBase<UsuarioCondominio, Long> implements ControllerMap<UsuarioCondominio, Long>{
-    private final UsuarioCondominioService service;
+@RequestMapping(value = "/usuario-sistema")
+public class UsuarioSistemaController extends ControllerBase<UsuarioSistema, Long> implements ControllerMap<UsuarioSistema, Long>{
 
-    public UsuarioCondominioController(UsuarioCondominioService service) {
+    private final UsuarioSistemaService service;
+
+    public UsuarioSistemaController(UsuarioSistemaService service) {
         this.service = service;
     }
 
     @Override
-    protected ResponseEntity<UsuarioCondominio> acaoBuscarPorId(Long id) throws BusinessException {
+    protected ResponseEntity<UsuarioSistema> acaoBuscarPorId(Long id) throws BusinessException {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
     @Override
-    protected ResponseEntity<List<UsuarioCondominio>> acaoListarTodos() {
-        return new ResponseEntity<>(service.listarTodos(), HttpStatus.OK);
+    protected ResponseEntity<List<UsuarioSistema>> acaoListarTodos() {
+        return ResponseEntity.ok(service.listarTodos());
     }
 
     @Override
-    protected ResponseEntity<UsuarioCondominio> acaoIncluir(UsuarioCondominio dto) throws BusinessException {
+    protected ResponseEntity<UsuarioSistema> acaoIncluir(UsuarioSistema dto) throws BusinessException {
         return new ResponseEntity<>(service.incluir(dto), HttpStatus.CREATED);
     }
 
     @Override
-    protected ResponseEntity<UsuarioCondominio> acaoAlterar(Long id, UsuarioCondominio dto) throws BusinessException {
+    protected ResponseEntity<UsuarioSistema> acaoAlterar(Long id, UsuarioSistema dto) throws BusinessException {
         return ResponseEntity.ok(service.alterar(id, dto));
     }
 
@@ -52,27 +53,27 @@ public class UsuarioCondominioController extends ControllerBase<UsuarioCondomini
     }
 
     @PatchMapping(value = "/{id}/inativar")
-    public ResponseEntity<UsuarioCondominio> inativar(@PathVariable Long id) throws BusinessException {
+    public ResponseEntity<UsuarioSistema> inativar(@PathVariable Long id) throws BusinessException {
         return ResponseEntity.ok(service.inativar(id));
     }
 
     @Override
-    public UsuarioCondominio obterPorIdMap(Long id) {
+    public UsuarioSistema obterPorIdMap(Long id) {
         return service.buscarPorIdMap(id);
     }
 
     @Override
-    public List<UsuarioCondominio> obterListaMap() {
+    public List<UsuarioSistema> obterListaMap() {
         return service.buscarTodosMap();
     }
 
     @Override
-    public UsuarioCondominio incluirMap(UsuarioCondominio objeto) {
+    public UsuarioSistema incluirMap(UsuarioSistema objeto) {
         return service.incluirMap(objeto);
     }
 
     @Override
-    public UsuarioCondominio alterarMap(Long id, UsuarioCondominio objeto) {
+    public UsuarioSistema alterarMap(Long id, UsuarioSistema objeto) {
         return service.alterarMap(id, objeto);
     }
 
@@ -82,7 +83,7 @@ public class UsuarioCondominioController extends ControllerBase<UsuarioCondomini
     }
 
     @Override
-    public UsuarioCondominio inativarMap(Long id) {
+    public UsuarioSistema inativarMap(Long id) {
         return service.inativarMap(id);
     }
 }

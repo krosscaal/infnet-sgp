@@ -42,4 +42,10 @@ public class UsuarioSistema extends EntidadeBase {
 
     @Enumerated(EnumType.STRING)
     private EnumTipoSituacao situacao;
+
+    @Override
+    public String toString() {
+        return String.format("Usuário Sistema id:%d, %s %s %s %s %s %s",
+                getId(), getUsuario().toString(), tipoUsuarioSistema.getDescricao(), email, senha, password, situacao.getDescricao());
+    }
 }
