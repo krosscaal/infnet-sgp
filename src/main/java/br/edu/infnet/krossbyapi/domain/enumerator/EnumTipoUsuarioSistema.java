@@ -15,4 +15,7 @@ public enum EnumTipoUsuarioSistema {
     ADMIN("Administrador/Síndico");
 
     private final String descricao;
+    public static EnumTipoUsuarioSistema valueOfUsuariosistema(final int ordinal) {
+        return EnumTipoUsuarioSistema.values()[ordinal];
+    }
 }

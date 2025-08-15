@@ -10,7 +10,7 @@ import lombok.Getter;
 @Getter
 public enum EnumTipoAcesso {
 
-    VISITANTE(0,"Visitante", "Conidado, Hospede"),
+    VISITANTE(0,"Visitante", "Convidado, Hospede"),
     FUNCIONARIO(1, "Funcionario", "Condominio"),
     FORNECEDOR(2, "Fornecedor", "Água, Gás, Supermercados"),
     PRESTADOR(3, "Prestador", "TV a Cabo, Telefonía/Internet, Energia Elétrica, Outros Serviços"),
