@@ -1,0 +1,11 @@
+usuario;propietario;24125008000;null;4199991111;null;1
+usuario2;morador;49710278070;null;4199992222;null;1
+usuario3;morador;49710278070;null;4199992222;null;1
+usuario4;morador;49710278088;null;4199992222;null;1
+Pedro;Costa;24125008000;null;4199991111;null;1
+Maria;Alves;49710278070;null;4199992222;null;1
+Julio;Souza;60918722063;null;4199993333;null;1
+Pedro;Costa;24125008000;null;4199991111;null;1
+Maria;Alves;49710278070;null;4199992222;null;1
+Julio;Souza;60918722063;null;4199993333;null;1
+Carlos;Costa;24125008000;null;4199991111;null;1

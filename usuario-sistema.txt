@@ -1,3 +1,3 @@
-Pedro;Costa;24125008000;null;4199991111;null;0;pedro1@gmail.com;senha1;password1;1
-Maria;Alves;49710278070;null;4199992222;null;0;maria2@gmail.com;senha2;password2;1
-Julio;Souza;60918722063;null;4199993333;null;1;julio3@gmail.com;senha3;password3;1
+5;0;pedro1@gmail.com;senha1;password1;1
+6;0;maria2@gmail.com;senha2;password2;1
+7;1;julio3@gmail.com;senha3;password3;1

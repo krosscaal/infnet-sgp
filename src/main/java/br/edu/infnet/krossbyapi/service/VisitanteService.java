@@ -24,7 +24,7 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
     private final VisitanteRepository visitanteRepository;
     private final UsuarioService usuarioService;
     private final Map<Long, Visitante> visitanteMap = new ConcurrentHashMap<>();
-    private final AtomicLong visitanteId = new AtomicLong(100);
+    private final AtomicLong visitanteId = new AtomicLong(1);
 
     public VisitanteService(VisitanteRepository visitanteRepository, UsuarioService usuarioService) {
         this.visitanteRepository = visitanteRepository;
@@ -50,7 +50,6 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
         try {
             usuarioService.validarUsuario(entidade.getUsuarioVisitante());
             entidade.setId(null);
-            entidade.setSituacao(EnumTipoSituacao.ATIVO);
             return visitanteRepository.save(entidade);
         } catch (UsuarioException e) {
             throw new BusinessException(e.getMessage());
@@ -103,7 +102,9 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
         usuarioService.validarUsuario(objeto.getUsuarioVisitante());
         objeto.getUsuarioVisitante().setId(UsuarioService.usuarioId.getAndIncrement());
         objeto.setId(visitanteId.getAndIncrement());
-        return null;
+        objeto.setSituacao(EnumTipoSituacao.ATIVO);
+        this.visitanteMap.put(objeto.getId(), objeto);
+        return objeto;
     }
 
     @Override
@@ -149,7 +150,7 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
         if (EnumTipoSituacao.INATIVO.equals(visitante.getSituacao())) {
             throw new BusinessException("Visitante já inativo!");
         }
-        visitante.setSituacao(EnumTipoSituacao.ATIVO);
+        visitante.setSituacao(EnumTipoSituacao.INATIVO);
         this.visitanteMap.put(id, visitante);
         return visitante;
     }

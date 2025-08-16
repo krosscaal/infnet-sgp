@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -21,10 +22,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_usuario_visitante")
+@Table(name = "tb_visitante")
 public class Visitante extends EntidadeBase {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuarioVisitante;
 
@@ -34,11 +35,11 @@ public class Visitante extends EntidadeBase {
     @Column(length = 15)
     private String cartaoAcesso;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "moradia_id_destino", referencedColumnName = "id")
     private Moradia moradiaDestinoVisitante;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "autorizado_por_usuario_id", referencedColumnName = "id")
     private UsuarioCondominio usuarioAutorizacao;
 
@@ -50,7 +51,7 @@ public class Visitante extends EntidadeBase {
 
     @Override
     public String toString() {
-        return String.format("Visitante id:%s %s %s %s %s %s %s %s",
+        return String.format("Visitante id:%d %s %s %s %s %s %s %s",
                 getId(), getUsuarioVisitante().toString(), tipoAcesso.getDescricao(), cartaoAcesso, moradiaDestinoVisitante.getNumeroUnidade(), usuarioAutorizacao.getId(), observacao, situacao.getDescricao());
     }
 }

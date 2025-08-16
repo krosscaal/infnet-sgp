@@ -23,7 +23,7 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
     private final UsuarioSistemaRepository repository;
     private final UsuarioService usuarioService;
     private final Map<Long, UsuarioSistema> usuarioSistemaMap = new ConcurrentHashMap<>();
-    private final AtomicLong usuarioSistemaId = new AtomicLong(10);
+    private final AtomicLong usuarioSistemaId = new AtomicLong(1);
 
     public UsuarioSistemaService(UsuarioSistemaRepository repository, UsuarioService usuarioService) {
         this.repository = repository;

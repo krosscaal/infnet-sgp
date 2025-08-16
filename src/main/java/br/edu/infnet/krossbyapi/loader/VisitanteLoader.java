@@ -10,25 +10,36 @@ import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
 import br.edu.infnet.krossbyapi.domain.entity.Visitante;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoAcesso;
+import br.edu.infnet.krossbyapi.service.MoradiaService;
+import br.edu.infnet.krossbyapi.service.UsuarioCondominioService;
+import br.edu.infnet.krossbyapi.service.UsuarioService;
 import br.edu.infnet.krossbyapi.service.VisitanteService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.logging.Logger;
 
-import static br.edu.infnet.krossbyapi.util.GeralUtils.criarUsuario;
 import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoSituacao;
 
+
+@Order(6)
 @Component
 public class VisitanteLoader implements ApplicationRunner {
     private final VisitanteService visitanteService;
+    private final MoradiaService moradiaService;
+    private final UsuarioCondominioService usuarioCondominioService;
+    private final UsuarioService usuarioService;
     Logger log = Logger.getLogger(VisitanteLoader.class.getName());
 
-    public VisitanteLoader(VisitanteService visitanteService) {
+    public VisitanteLoader(VisitanteService visitanteService, MoradiaService moradiaService, UsuarioCondominioService usuarioCondominioService, UsuarioService usuarioService) {
         this.visitanteService = visitanteService;
+        this.moradiaService = moradiaService;
+        this.usuarioCondominioService = usuarioCondominioService;
+        this.usuarioService = usuarioService;
     }
 
 
@@ -42,8 +53,11 @@ public class VisitanteLoader implements ApplicationRunner {
 
             while (linha != null) {
                 campos = linha.split(";");
-                Usuario usuario = criarUsuario(campos);
-                int ordinalTipoAcesso = Integer.parseInt(campos[6]);
+
+                Long idUsuario = Long.valueOf(campos[0]);
+                Usuario usuario = usuarioService.buscarPorIdMap(idUsuario);
+
+                int ordinalTipoAcesso = Integer.parseInt(campos[1]);
                 EnumTipoAcesso tipoAcesso = EnumTipoAcesso.getByCodigo(ordinalTipoAcesso);
                 Visitante visitante = criarVistante(campos);
                 visitante.setUsuarioVisitante(usuario);
@@ -60,21 +74,19 @@ public class VisitanteLoader implements ApplicationRunner {
     }
 
     private Visitante criarVistante(String[] campos) {
-        Long idMoradia = Long.valueOf(campos[8]);
-        Long idUsuarioAutorizado = Long.valueOf(campos[9]);
+        Long idMoradia = Long.valueOf(campos[3]);
+        Long idUsuarioAutorizado = Long.valueOf(campos[4]);
 
-        Moradia moradia = new Moradia();
-        moradia.setId(idMoradia);
+        Moradia moradia = moradiaService.buscarPorId(idMoradia);
+        UsuarioCondominio usuarioCondominio = usuarioCondominioService.buscarPorId(idUsuarioAutorizado);
 
-        UsuarioCondominio usuarioCondominio = new UsuarioCondominio();
-        usuarioCondominio.setId(idUsuarioAutorizado);
 
         Visitante visitante = new Visitante();
-        visitante.setCartaoAcesso(campos[7]);
+        visitante.setCartaoAcesso(campos[2]);
         visitante.setMoradiaDestinoVisitante(moradia);
         visitante.setUsuarioAutorizacao(usuarioCondominio);
-        visitante.setObservacao(campos[10]);
-        visitante.setSituacao(getTipoSituacao(campos[11]));
+        visitante.setObservacao(campos[5]);
+        visitante.setSituacao(getTipoSituacao(campos[6]));
         return visitante;
     }
 }
