@@ -49,4 +49,8 @@ public class Moradia extends EntidadeBase {
     @Column
     private String lote;
 
+    @Override
+    public String toString() {
+        return String.format("Moradia id: %d, número unidade:%s %s", getId(), numeroUnidade, situacao.getDescricao());
+    }
 }

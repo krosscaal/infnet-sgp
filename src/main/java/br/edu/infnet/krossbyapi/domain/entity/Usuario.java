@@ -5,8 +5,11 @@
  
 package br.edu.infnet.krossbyapi.domain.entity;
 
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,8 +42,11 @@ public class Usuario extends EntidadeBase implements Serializable {
     @Column(name = "telefone_2", length = 11)
     private String telefone2;
 
+    @Enumerated(EnumType.STRING)
+    private EnumTipoSituacao situacao;
+
     @Override
     public String toString() {
-        return String.format("Usuario id:%d %s %s %s %s %s %s ", getId(), nome, sobreNome, cpf, rg, telefone1, telefone2);
+        return String.format("Usuario id:%d %s %s %s %s %s %s %s", getId(), nome, sobreNome, cpf, rg, telefone1, telefone2, situacao.getDescricao());
     }
 }

@@ -12,12 +12,14 @@ import br.edu.infnet.krossbyapi.domain.record.CondominioRecord;
 import br.edu.infnet.krossbyapi.service.CondominioService;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.logging.Logger;
 
+@Order(1)
 @Component
 public class CondominioLoader implements ApplicationRunner {
 
@@ -78,9 +80,6 @@ public class CondominioLoader implements ApplicationRunner {
             }
 
         }
-        log.info("Lista Condominio do Banco de dados");
-        condominioService.listarTodos().forEach(condominioRecord -> log.info(condominioRecord.toString()));
-
         log.info("Lista de Condominios do Map");
         condominioService.listarTodosMap().forEach(condominio -> log.info(condominio.toString()));
 

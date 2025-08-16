@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Table(name = "tb_correspondencia")
 public class Correspondencia extends EntidadeBase {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "moradia_da_entrega",
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "fk_correspondencia_id_moradia"))
@@ -50,11 +50,11 @@ public class Correspondencia extends EntidadeBase {
     @CreationTimestamp
     private LocalDateTime dataEntregaDestinatario;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usuario_recepcao", nullable = false)
     private UsuarioSistema usuarioRecepcao;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usuario_entrega", nullable = false)
     private UsuarioSistema usuarioEntrega;
 

@@ -37,6 +37,7 @@ public class GeralUtils {
         usuario.setRg(!campos[3].equalsIgnoreCase("null") ? campos[3] : null);
         usuario.setTelefone1(!campos[4].equalsIgnoreCase("null") ? campos[4] : null);
         usuario.setTelefone2(!campos[5].equalsIgnoreCase("null") ? campos[5] : null);
+        usuario.setSituacao(getTipoSituacao(campos[6]));
         return usuario;
 
     }
