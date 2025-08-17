@@ -52,7 +52,7 @@ public class UsuarioController extends ControllerBase<Usuario, Long> implements 
     }
 
     @PatchMapping(value = "/{id}/inativar")
-    public ResponseEntity<Usuario> inativar(@PathVariable Long id) throws BusinessException {
+    public ResponseEntity<Usuario> inativar(@PathVariable Long id) throws Exception {
         return ResponseEntity.ok(usuarioService.inativar(id));
     }
 
@@ -81,8 +81,8 @@ public class UsuarioController extends ControllerBase<Usuario, Long> implements 
         usuarioService.excluirMap(id);
     }
 
-    @Override
-    public Usuario inativarMap(Long id) {
+    @PatchMapping(value = "/map/{id}/instivar")
+    public Usuario inativarMap(@PathVariable("id") Long id) {
         return usuarioService.inativarMap(id);
     }
 }

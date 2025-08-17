@@ -8,7 +8,6 @@ package br.edu.infnet.krossbyapi.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +33,4 @@ public interface ControllerMap<T, K> {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluirMap(@PathVariable("id") K id);
 
-    @PatchMapping(value = "/map/{id}/inativar")
-    public T inativarMap(@PathVariable("id") K id);
 }

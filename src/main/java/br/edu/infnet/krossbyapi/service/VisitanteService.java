@@ -62,7 +62,6 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
             Visitante visitanteObj = this.buscarPorIdVisitante(idObjeto);
             usuarioService.validarUsuario(entidade.getUsuarioVisitante());
             visitanteObj.setUsuarioVisitante(entidade.getUsuarioVisitante());
-            visitanteObj.setSituacao(entidade.getSituacao());
             visitanteObj.setCartaoAcesso(entidade.getCartaoAcesso());
             visitanteObj.setTipoAcesso(entidade.getTipoAcesso());
             visitanteObj.setUsuarioAutorizacao(entidade.getUsuarioAutorizacao());
@@ -88,21 +87,12 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
         return visitanteRepository.findById(idVisitante).orElseThrow(()-> new UsuarioException("Usuário Visitante não encontrado!"));
     }
 
-    public Visitante inativar(Long id) {
-        Visitante visitanteObj = this.buscarPorIdVisitante(id);
-        if (EnumTipoSituacao.INATIVO.equals(visitanteObj.getSituacao())) {
-            throw new BusinessException("Visitante já está inativo!!");
-        }
-        visitanteObj.setSituacao(EnumTipoSituacao.INATIVO);
-        return visitanteRepository.save(visitanteObj);
-    }
 
     @Override
     public Visitante incluirMap(Visitante objeto) {
         usuarioService.validarUsuario(objeto.getUsuarioVisitante());
         objeto.getUsuarioVisitante().setId(UsuarioService.usuarioId.getAndIncrement());
         objeto.setId(visitanteId.getAndIncrement());
-        objeto.setSituacao(EnumTipoSituacao.ATIVO);
         this.visitanteMap.put(objeto.getId(), objeto);
         return objeto;
     }
@@ -113,7 +103,6 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
         Visitante visitante = this.visitanteMap.get(idObjeto);
         usuarioService.validarUsuario(objeto.getUsuarioVisitante());
         visitante.setUsuarioVisitante(objeto.getUsuarioVisitante());
-        visitante.setSituacao(objeto.getSituacao());
         visitante.setCartaoAcesso(objeto.getCartaoAcesso());
         visitante.setTipoAcesso(objeto.getTipoAcesso());
         visitante.setUsuarioAutorizacao(objeto.getUsuarioAutorizacao());
@@ -143,15 +132,5 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
         if (!this.visitanteMap.containsKey(idObjeto)) {
             throw new BusinessException("Vistante não existe");
         }
-    }
-    public Visitante inativarMap(Long id) {
-        this.verificaExisteMap(id);
-        Visitante visitante = this.visitanteMap.get(id);
-        if (EnumTipoSituacao.INATIVO.equals(visitante.getSituacao())) {
-            throw new BusinessException("Visitante já inativo!");
-        }
-        visitante.setSituacao(EnumTipoSituacao.INATIVO);
-        this.visitanteMap.put(id, visitante);
-        return visitante;
     }
 }

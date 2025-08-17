@@ -81,8 +81,8 @@ public class UsuarioCondominioController extends ControllerBase<UsuarioCondomini
         service.excluirMap(id);
     }
 
-    @Override
-    public UsuarioCondominio inativarMap(Long id) {
+    @PatchMapping(value = "/map/{id}/inativar")
+    public UsuarioCondominio inativarMap(@PathVariable("id") Long id) {
         return service.inativarMap(id);
     }
 }

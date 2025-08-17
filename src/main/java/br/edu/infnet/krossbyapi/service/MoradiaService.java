@@ -62,7 +62,8 @@ public class MoradiaService implements ServiceBase<Moradia, Long>, ServiceMap<Mo
 
     @Override
     public void excluir(Long idObjeto) throws BusinessException {
-        moradiaRepository.deleteById(idObjeto);
+        this.buscarMoradiaPorId(idObjeto);
+        throw new BusinessException("ATENÇÃO NEMHUMA MORADIA PODE SER APAGADA, SOMENTE É PERMITIDO INATIVAR");
     }
     private Moradia buscarMoradiaPorId(Long idObjeto) throws BusinessException {
         return moradiaRepository.findById(idObjeto).orElseThrow(()-> new BusinessException("Moradia não encontrada"));

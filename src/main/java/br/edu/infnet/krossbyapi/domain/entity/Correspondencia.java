@@ -5,14 +5,11 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,11 +52,14 @@ public class Correspondencia extends EntidadeBase {
     private UsuarioSistema usuarioRecepcao;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_entrega", nullable = false)
+    @JoinColumn(name = "usuario_entrega")
     private UsuarioSistema usuarioEntrega;
 
-    @Column(name = "nome_morador_recepcao", nullable = false, length = 150)
+    @Column(name = "nome_morador_recepcao", length = 150)
     private String nomeMoradorRecepcao;
 
-
+    @Override
+    public String toString() {
+        return String.format("Correspondencia id:%d moradia entrega:%s destinatario:%s", getId(), moradiaEntrega.getNumeroUnidade(), nomeDestinatario);
+    }
 }

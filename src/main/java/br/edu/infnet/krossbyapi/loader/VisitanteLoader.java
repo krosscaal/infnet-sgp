@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.logging.Logger;
 
-import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoSituacao;
 
 
 @Order(6)
@@ -86,7 +85,6 @@ public class VisitanteLoader implements ApplicationRunner {
         visitante.setMoradiaDestinoVisitante(moradia);
         visitante.setUsuarioAutorizacao(usuarioCondominio);
         visitante.setObservacao(campos[5]);
-        visitante.setSituacao(getTipoSituacao(campos[6]));
         return visitante;
     }
 }

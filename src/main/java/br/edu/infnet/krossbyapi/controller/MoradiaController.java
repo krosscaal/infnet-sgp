@@ -82,8 +82,8 @@ public class MoradiaController extends ControllerBase<Moradia, Long> implements 
         moradiaService.excluirMap(id);
     }
 
-    @Override
-    public Moradia inativarMap(Long id) {
+    @PatchMapping(value = "/map/{id}/instivar")
+    public Moradia inativarMap(@PathVariable("id") Long id) {
         return moradiaService.inativarMap(id);
     }
 }

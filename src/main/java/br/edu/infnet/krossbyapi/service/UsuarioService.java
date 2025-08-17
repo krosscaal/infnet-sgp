@@ -10,6 +10,9 @@ import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.repository.UsuarioRepository;
+import jakarta.validation.ConstraintViolationException;
+import org.hibernate.TransientObjectException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,10 +42,10 @@ public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<U
     }
 
     @Override
-    public Usuario buscarPorId(Long idObjeto) throws BusinessException {
+    public Usuario buscarPorId(Long idObjeto) {
         try {
             return this.buscarUsuarioPorId(idObjeto);
-        } catch (UsuarioException e) {
+        } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
     }
@@ -84,11 +87,18 @@ public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<U
 
     @Override
     public void excluir(Long idObjeto) throws BusinessException {
-        usuarioRepository.deleteById(idObjeto);
+        try {
+            this.buscarUsuarioPorId(idObjeto);
+            usuarioRepository.deleteById(idObjeto);
+        } catch (UsuarioException e) {
+            throw new BusinessException(e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            throw new BusinessException("Usuário não pode ser apagado por estar em uso atualmente");
+        }
     }
 
     private Usuario buscarUsuarioPorId(Long idObjeto) throws UsuarioException {
-        return usuarioRepository.findById(idObjeto).orElseThrow(()-> new UsuarioException("Usuario não exite"));
+        return usuarioRepository.findById(idObjeto).orElseThrow(()-> new UsuarioException("Usuário informado não existe"));
     }
 
     public Usuario inativar(Long idObjeto) throws UsuarioException {
@@ -108,7 +118,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<U
         usuarioMap.put(objeto.getId(), objeto);
         return objeto;
     }
-    private void verificaExisteMap(Long idObjeto) {
+    public void verificaExisteMap(Long idObjeto) {
         if (!usuarioMap.containsKey(idObjeto)) {
             throw new UsuarioException("usuário não encontrado em Map");
         }

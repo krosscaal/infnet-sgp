@@ -53,10 +53,6 @@ public class VisitanteController extends ControllerBase<Visitante, Long> impleme
         visitanteService.excluir(id);
     }
 
-    @PatchMapping("/{id}/inativar")
-    public ResponseEntity<Visitante> inativar(@PathVariable Long id) throws BusinessException {
-        return ResponseEntity.ok(visitanteService.inativar(id));
-    }
     @Override
     public Visitante obterPorIdMap(Long id) {
         return visitanteService.buscarPorIdMap(id);
@@ -82,8 +78,4 @@ public class VisitanteController extends ControllerBase<Visitante, Long> impleme
         visitanteService.excluirMap(id);
     }
 
-    @Override
-    public Visitante inativarMap(Long id) {
-        return visitanteService.inativarMap(id);
-    }
 }

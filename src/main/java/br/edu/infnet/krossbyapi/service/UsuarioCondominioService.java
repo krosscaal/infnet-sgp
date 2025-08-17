@@ -5,6 +5,7 @@
 
 package br.edu.infnet.krossbyapi.service;
 
+import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
@@ -48,9 +49,10 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     @Override
     public UsuarioCondominio incluir(UsuarioCondominio entidade) throws BusinessException {
         try {
-            usuarioService.validarUsuario(entidade.getUsuario());
+            Usuario usuarioObj = usuarioService.buscarPorId(entidade.getUsuario().getId());
             entidade.setId(null);
             entidade.setSituacao(EnumTipoSituacao.ATIVO);
+            entidade.setUsuario(usuarioObj);
             return repository.save(entidade);
 
         } catch (UsuarioException e) {
@@ -62,8 +64,8 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     public UsuarioCondominio alterar(Long idObjeto, UsuarioCondominio entidade) throws BusinessException {
         try {
             UsuarioCondominio usuarioCondominio = this.buscarUsuarioCondominioPorId(idObjeto);
-            usuarioService.validarUsuario(entidade.getUsuario());
-            usuarioCondominio.setUsuario(entidade.getUsuario());
+            Usuario usuario = usuarioService.buscarPorId(entidade.getUsuario().getId());
+            usuarioCondominio.setUsuario(usuario);
             usuarioCondominio.setEmail(entidade.getEmail());
             usuarioCondominio.setTipoResidente(entidade.getTipoResidente());
             usuarioCondominio.setSituacao(entidade.getSituacao());
@@ -86,7 +88,7 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     }
 
     private UsuarioCondominio buscarUsuarioCondominioPorId(Long idUsuario) throws UsuarioException {
-        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuario não encontrado"));
+        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuário do Condominio não encontrado"));
     }
     public UsuarioCondominio inativar(Long idUsuario) {
         UsuarioCondominio usuarioCondominioObj = this.buscarUsuarioCondominioPorId(idUsuario);
@@ -99,10 +101,12 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
 
     @Override
     public UsuarioCondominio incluirMap(UsuarioCondominio objeto) {
-        usuarioService.validarUsuario(objeto.getUsuario());
-        objeto.getUsuario().setId(UsuarioService.usuarioId.getAndIncrement());
+        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
+        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
+
         objeto.setId(usuarioCondominioId.getAndIncrement());
         objeto.setSituacao(EnumTipoSituacao.ATIVO);
+        objeto.setUsuario(usuario);
         usuarioCondominioMap.put(objeto.getId(), objeto);
         return objeto;
     }
@@ -111,8 +115,11 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     public UsuarioCondominio alterarMap(Long idObjeto, UsuarioCondominio objeto) {
         this.verificaExisteEmMap(idObjeto);
         UsuarioCondominio usuarioCondominioObj = this.usuarioCondominioMap.get(idObjeto);
-        usuarioService.validarUsuario(objeto.getUsuario());
-        usuarioCondominioObj.setUsuario(objeto.getUsuario());
+
+        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
+        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
+
+        usuarioCondominioObj.setUsuario(usuario);
         usuarioCondominioObj.setEmail(objeto.getEmail());
         usuarioCondominioObj.setTipoResidente(objeto.getTipoResidente());
         usuarioCondominioObj.setSituacao(objeto.getSituacao());

@@ -5,6 +5,7 @@
 
 package br.edu.infnet.krossbyapi.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,9 +31,11 @@ public abstract class EntidadeBase implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @CreationTimestamp
     private LocalDateTime dataCriacao;
 
+    @JsonIgnore
     @CreationTimestamp
     private LocalDateTime dataAtualizacao;
 
