@@ -4,7 +4,7 @@
 
 ## Tecnologias utilizadas
 
-- Java (17)
+- Java (21)
 - Spring Boot (3.5.3)
 - banco em memoria H2
 
