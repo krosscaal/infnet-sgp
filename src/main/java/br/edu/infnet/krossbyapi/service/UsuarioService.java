@@ -10,8 +10,6 @@ import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.repository.UsuarioRepository;
-import jakarta.validation.ConstraintViolationException;
-import org.hibernate.TransientObjectException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -98,7 +96,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<U
     }
 
     private Usuario buscarUsuarioPorId(Long idObjeto) throws UsuarioException {
-        return usuarioRepository.findById(idObjeto).orElseThrow(()-> new UsuarioException("Usuário informado não existe"));
+        return usuarioRepository.findById(idObjeto).orElseThrow(()-> new UsuarioException(String.format("Usuário informado com id %d, não existe", idObjeto)));
     }
 
     public Usuario inativar(Long idObjeto) throws UsuarioException {

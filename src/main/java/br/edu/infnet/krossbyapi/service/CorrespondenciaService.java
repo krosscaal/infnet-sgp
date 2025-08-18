@@ -6,6 +6,7 @@
 package br.edu.infnet.krossbyapi.service;
 
 import br.edu.infnet.krossbyapi.domain.entity.Correspondencia;
+import br.edu.infnet.krossbyapi.domain.entity.Moradia;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.repository.CorrespondenciaRepository;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,13 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class CorrespondenciaService implements ServiceBase<Correspondencia, Long>, ServiceMap<Correspondencia, Long> {
     private final CorrespondenciaRepository correspondenciaRepository;
+    private final MoradiaService moradiaService;
     private final Map<Long, Correspondencia> correspondenciaMap = new ConcurrentHashMap<>();
     private final AtomicLong idCorrespondencia = new AtomicLong(1);
 
-    public CorrespondenciaService(CorrespondenciaRepository correspondenciaRepository) {
+    public CorrespondenciaService(CorrespondenciaRepository correspondenciaRepository, MoradiaService moradiaService) {
         this.correspondenciaRepository = correspondenciaRepository;
+        this.moradiaService = moradiaService;
     }
 
     @Override
@@ -38,8 +41,10 @@ public class CorrespondenciaService implements ServiceBase<Correspondencia, Long
 
     @Override
     public Correspondencia incluir(Correspondencia entidade) throws BusinessException {
+        Moradia moradia = moradiaService.buscarPorId(entidade.getMoradiaEntrega().getId());
         this.validarCorrespondencia(entidade);
         entidade.setId(null);
+        entidade.setMoradiaEntrega(moradia);
         return correspondenciaRepository.save(entidade);
     }
 
@@ -55,9 +60,10 @@ public class CorrespondenciaService implements ServiceBase<Correspondencia, Long
 
     @Override
     public Correspondencia alterar(Long idObjeto, Correspondencia entidade) throws BusinessException {
+        Moradia moradia = moradiaService.buscarPorId(entidade.getMoradiaEntrega().getId());
         this.validarCorrespondencia(entidade);
         Correspondencia correspondencia = this.buscarCorrespondenciaPorId(idObjeto);
-        correspondencia.setMoradiaEntrega(entidade.getMoradiaEntrega());
+        correspondencia.setMoradiaEntrega(moradia);
         correspondencia.setEmailDestinatario(entidade.getEmailDestinatario());
         correspondencia.setNomeDestinatario(entidade.getNomeDestinatario());
         correspondencia.setEmailDestinatario(entidade.getEmailDestinatario());
@@ -74,29 +80,32 @@ public class CorrespondenciaService implements ServiceBase<Correspondencia, Long
     }
 
     private Correspondencia buscarCorrespondenciaPorId(Long id) {
-        return correspondenciaRepository.findById(id).orElseThrow(()-> new BusinessException("id Correspondencia não encontrado"));
+        return correspondenciaRepository.findById(id).orElseThrow(()-> new BusinessException(String.format("Correspondencia com id:%d não encontrado", id)));
     }
 
     @Override
     public Correspondencia incluirMap(Correspondencia objeto) {
+        Moradia moradia = moradiaService.buscarPorIdMap(objeto.getMoradiaEntrega().getId());
         this.validarCorrespondencia(objeto);
         objeto.setId(idCorrespondencia.getAndIncrement());
+        objeto.setMoradiaEntrega(moradia);
         this.correspondenciaMap.put(objeto.getId(), objeto);
         return objeto;
     }
 
     @Override
     public Correspondencia alterarMap(Long idObjeto, Correspondencia objeto) {
+        Moradia moradia = moradiaService.buscarPorIdMap(objeto.getMoradiaEntrega().getId());
         this.validarCorrespondencia(objeto);
         this.verificaExisteMap(idObjeto);
         Correspondencia correspondencia = this.correspondenciaMap.get(idObjeto);
-        correspondencia.setMoradiaEntrega(objeto.getMoradiaEntrega());
         correspondencia.setEmailDestinatario(objeto.getEmailDestinatario());
         correspondencia.setNomeDestinatario(objeto.getNomeDestinatario());
         correspondencia.setEmailDestinatario(objeto.getEmailDestinatario());
         correspondencia.setCodigoIdentificadorDaEntrega(objeto.getCodigoIdentificadorDaEntrega());
         correspondencia.setNomeMoradorRecepcao(objeto.getNomeMoradorRecepcao());
         correspondencia.setTelefoneDestinatario(objeto.getTelefoneDestinatario());
+        correspondencia.setMoradiaEntrega(moradia);
         this.correspondenciaMap.put(idObjeto, correspondencia);
         return correspondencia;
     }
@@ -119,7 +128,7 @@ public class CorrespondenciaService implements ServiceBase<Correspondencia, Long
     }
     public void verificaExisteMap(Long id) {
         if (!this.correspondenciaMap.containsKey(id)) {
-            throw new BusinessException("id correspondencia não encontrado em Map");
+            throw new BusinessException(String.format("correspondencia com id:%d não encontrado em Map", id));
         }
     }
 }

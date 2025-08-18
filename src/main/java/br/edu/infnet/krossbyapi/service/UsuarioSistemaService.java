@@ -5,6 +5,7 @@
 
 package br.edu.infnet.krossbyapi.service;
 
+import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioSistema;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
@@ -48,8 +49,10 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
     public UsuarioSistema incluir(UsuarioSistema entidade) throws BusinessException {
         try {
             this.validarUsuarioSistema(entidade);
+            Usuario usuarioObj = usuarioService.buscarPorId(entidade.getUsuario().getId());
             entidade.setId(null);
             entidade.setSituacao(EnumTipoSituacao.ATIVO);
+            entidade.setUsuario(usuarioObj);
             return repository.save(entidade);
         } catch (UsuarioException e) {
             throw new BusinessException(e.getMessage());
@@ -60,8 +63,9 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
     public UsuarioSistema alterar(Long idObjeto, UsuarioSistema entidade) throws BusinessException {
         try {
             UsuarioSistema usuarioSistema = this.buscarUsuarioSistemaPorId(idObjeto);
+            Usuario usuarioObj = usuarioService.buscarPorId(entidade.getUsuario().getId());
             this.validarUsuarioSistema(entidade);
-            usuarioSistema.setUsuario(entidade.getUsuario());
+            usuarioSistema.setUsuario(usuarioObj);
             usuarioSistema.setEmail(entidade.getEmail());
             usuarioSistema.setSenha(entidade.getSenha());
             usuarioSistema.setPassword(entidade.getPassword());
@@ -85,30 +89,36 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
     }
 
     private UsuarioSistema buscarUsuarioSistemaPorId(Long idUsuario) throws UsuarioException {
-        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuario não encontrado"));
+        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuario Sistema não encontrado"));
     }
 
     private void validarUsuarioSistema(UsuarioSistema entidade) throws UsuarioException {
-        usuarioService.validarUsuario(entidade.getUsuario());
         if (entidade.getEmail().trim().isEmpty()) {
             throw new UsuarioException("Email do usuário é obrigatório!");
         }
     }
 
-    public UsuarioSistema inativar(Long id) {
-        UsuarioSistema usuarioSistema = this.buscarUsuarioSistemaPorId(id);
-        if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
-            throw new UsuarioException("Usuario já está inativo.");
+    public UsuarioSistema inativar(Long id) throws BusinessException {
+        try {
+            UsuarioSistema usuarioSistema = this.buscarUsuarioSistemaPorId(id);
+            if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
+                throw new UsuarioException("Usuario Sistema já está inativo.");
+            }
+            usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
+            return repository.save(usuarioSistema);
+        } catch (UsuarioException e) {
+            throw new BusinessException(e.getMessage());
         }
-        usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
-        return repository.save(usuarioSistema);
     }
 
 
     @Override
     public UsuarioSistema incluirMap(UsuarioSistema objeto) {
+        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
+        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
+
         this.validarUsuarioSistema(objeto);
-        objeto.getUsuario().setId(UsuarioService.usuarioId.getAndIncrement());
+        objeto.setUsuario(usuario);
         objeto.setId(usuarioSistemaId.getAndIncrement());
         objeto.setSituacao(EnumTipoSituacao.ATIVO);
         usuarioSistemaMap.put(objeto.getId(), objeto);
@@ -117,10 +127,15 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
 
     @Override
     public UsuarioSistema alterarMap(Long idObjeto, UsuarioSistema objeto) {
+        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
+        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
+
         this.verificaExisteEmMap(idObjeto);
         UsuarioSistema usuarioSistema = this.usuarioSistemaMap.get(idObjeto);
+
         this.validarUsuarioSistema(objeto);
-        usuarioSistema.setUsuario(objeto.getUsuario());
+
+        usuarioSistema.setUsuario(usuario);
         usuarioSistema.setEmail(objeto.getEmail());
         usuarioSistema.setSenha(objeto.getSenha());
         usuarioSistema.setPassword(objeto.getPassword());
@@ -148,14 +163,14 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
 
     private void verificaExisteEmMap(Long idUsuario) {
         if (!this.usuarioSistemaMap.containsKey(idUsuario)) {
-            throw new UsuarioException("Usuário não existe");
+            throw new BusinessException("Usuário não existe");
         }
     }
     public UsuarioSistema inativarMap(Long idUsuario) {
         this.verificaExisteEmMap(idUsuario);
         UsuarioSistema usuarioSistema = this.usuarioSistemaMap.get(idUsuario);
         if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
-            throw new UsuarioException("Usuário já está inativo.");
+            throw new UsuarioException("Usuário Sistema já está inativo.");
         }
         usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
         this.usuarioSistemaMap.put(idUsuario, usuarioSistema);

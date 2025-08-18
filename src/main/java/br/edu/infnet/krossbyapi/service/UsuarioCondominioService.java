@@ -88,12 +88,13 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     }
 
     private UsuarioCondominio buscarUsuarioCondominioPorId(Long idUsuario) throws UsuarioException {
-        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuário do Condominio não encontrado"));
+        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuário Condominio não encontrado"));
     }
-    public UsuarioCondominio inativar(Long idUsuario) {
+    public UsuarioCondominio inativar(Long idUsuario) throws BusinessException {
+
         UsuarioCondominio usuarioCondominioObj = this.buscarUsuarioCondominioPorId(idUsuario);
         if (EnumTipoSituacao.INATIVO.equals(usuarioCondominioObj.getSituacao())) {
-            throw new BusinessException("Usuário Já está inativo.");
+            throw new BusinessException("Usuário Condominio Já está inativo.");
         }
         usuarioCondominioObj.setSituacao(EnumTipoSituacao.INATIVO);
         return repository.save(usuarioCondominioObj);

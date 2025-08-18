@@ -82,7 +82,7 @@ public class UsuarioSistemaController extends ControllerBase<UsuarioSistema, Lon
         service.excluirMap(id);
     }
 
-    @PatchMapping(value = "/map/{id}/instivar")
+    @PatchMapping(value = "/map/{id}/inativar")
     public UsuarioSistema inativarMap(@PathVariable("id") Long id) {
         return service.inativarMap(id);
     }
