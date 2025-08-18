@@ -44,7 +44,6 @@ public class Correspondencia extends EntidadeBase {
     @CreationTimestamp
     private LocalDateTime dataRecepcao;
 
-    @CreationTimestamp
     private LocalDateTime dataEntregaDestinatario;
 
     @ManyToOne

@@ -167,13 +167,17 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
         }
     }
     public UsuarioSistema inativarMap(Long idUsuario) {
-        this.verificaExisteEmMap(idUsuario);
-        UsuarioSistema usuarioSistema = this.usuarioSistemaMap.get(idUsuario);
-        if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
-            throw new UsuarioException("Usuário Sistema já está inativo.");
+        try {
+            this.verificaExisteEmMap(idUsuario);
+            UsuarioSistema usuarioSistema = this.usuarioSistemaMap.get(idUsuario);
+            if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
+                throw new UsuarioException("Usuário Sistema já está inativo.");
+            }
+            usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
+            this.usuarioSistemaMap.put(idUsuario, usuarioSistema);
+            return usuarioSistema;
+        } catch (UsuarioException e) {
+            throw new BusinessException(e.getMessage());
         }
-        usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
-        this.usuarioSistemaMap.put(idUsuario, usuarioSistema);
-        return usuarioSistema;
     }
 }
