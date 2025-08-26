@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 import static br.edu.infnet.krossbyapi.util.GeralUtils.criarUsuario;
 
-@Order(3)
+@Order(2)
 @Component
 public class UsuarioLoader implements ApplicationRunner {
     private final UsuarioService usuarioService;
@@ -39,11 +39,10 @@ public class UsuarioLoader implements ApplicationRunner {
                 campos = linha.split(";");
                 Usuario usuario = criarUsuario(campos);
                 usuarioService.incluir(usuario);
-                usuarioService.incluirMap(usuario);
                 linha = lerArquivo.readLine();
             }
         }
-        log.info("lista de usuarios do Map");
-        usuarioService.buscarTodosMap().forEach((usuario) -> log.info(usuario.toString()));
+        log.info("lista de usuarios carregada com sucesso!");
+        usuarioService.listarTodos().forEach(usuario -> log.info(usuario.toString()));
     }
 }

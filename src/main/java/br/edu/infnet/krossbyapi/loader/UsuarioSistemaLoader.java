@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoSituacao;
 import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoUsuariosistema;
 
-@Order(5)
+@Order(4)
 @Component
 public class UsuarioSistemaLoader implements ApplicationRunner {
 
@@ -47,7 +47,7 @@ public class UsuarioSistemaLoader implements ApplicationRunner {
                 campos = linha.split(";");
 
                 Long idUsuario = Long.valueOf(campos[0]);
-                Usuario usuario = usuarioService.buscarPorIdMap(idUsuario);
+                Usuario usuario = usuarioService.buscarPorId(idUsuario);
 
                 EnumTipoUsuarioSistema usuariosistema = getTipoUsuariosistema(campos[1]);
                 EnumTipoSituacao situacao = getTipoSituacao(campos[5]);
@@ -61,12 +61,11 @@ public class UsuarioSistemaLoader implements ApplicationRunner {
                 usuarioSistema.setSituacao(situacao);
 
                 usuarioSistemaService.incluir(usuarioSistema);
-                usuarioSistemaService.incluirMap(usuarioSistema);
                 linha = lerArquivo.readLine();
             }
         }
-        log.info("lista UsuarioSistema do Map");
-        usuarioSistemaService.buscarTodosMap().forEach(usuarioSistema -> log.info(usuarioSistema.toString()));
+        log.info("lista UsuarioSistema carregada com sucesso");
+        usuarioSistemaService.listarTodos().forEach(usuarioSistema -> log.info(usuarioSistema.toString()));
     }
 
 }

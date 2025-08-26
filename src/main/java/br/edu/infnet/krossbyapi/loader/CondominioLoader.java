@@ -74,14 +74,13 @@ public class CondominioLoader implements ApplicationRunner {
                         ativo);
 
                 condominioService.incluir(condominioRecord);
-                condominioService.incluirMap(condominioRecord);
 
                 linha = lerArquivo.readLine();
             }
 
         }
-        log.info("Lista de Condominios do Map");
-        condominioService.listarTodosMap().forEach(condominio -> log.info(condominio.toString()));
+        log.info("Lista de Condominios carregados com sucesso");
+        condominioService.listarTodos().forEach(condominio -> log.info(condominio.toString()));
 
 
     }

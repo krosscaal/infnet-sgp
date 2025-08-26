@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoResidente;
 import static br.edu.infnet.krossbyapi.util.GeralUtils.getTipoSituacao;
 
-@Order(4)
+@Order(3)
 @Component
 public class UsuarioCondominioLoader implements ApplicationRunner {
     private final UsuarioCondominioService usuarioCondominioService;
@@ -45,7 +45,7 @@ public class UsuarioCondominioLoader implements ApplicationRunner {
             while (linha != null) {
                 campos = linha.split(";");
                 Long idUsuario = Long.valueOf(campos[0]);
-                Usuario usuario = usuarioService.buscarPorIdMap(idUsuario);
+                Usuario usuario = usuarioService.buscarPorId(idUsuario);
 
                 EnumTipoResidente residente = getTipoResidente(campos[1]);
                 EnumTipoSituacao situacao = getTipoSituacao(campos[3]);
@@ -57,13 +57,12 @@ public class UsuarioCondominioLoader implements ApplicationRunner {
                 usuarioCondominio.setSituacao(situacao);
 
                 usuarioCondominioService.incluir(usuarioCondominio);
-                usuarioCondominioService.incluirMap(usuarioCondominio);
 
                 linha = lerArquivo.readLine();
             }
         }
-        log.info("lista UsuarioCondomino do Map");
-        usuarioCondominioService.buscarTodosMap().forEach(usuarioCondominio -> log.info(usuarioCondominio.toString()));
+        log.info("lista UsuarioCondomino carregada com sucesso");
+        usuarioCondominioService.listarTodos().forEach(usuarioCondominio -> log.info(usuarioCondominio.toString()));
 
     }
 }

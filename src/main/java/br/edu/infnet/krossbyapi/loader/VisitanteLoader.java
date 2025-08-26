@@ -54,7 +54,7 @@ public class VisitanteLoader implements ApplicationRunner {
                 campos = linha.split(";");
 
                 Long idUsuario = Long.valueOf(campos[0]);
-                Usuario usuario = usuarioService.buscarPorIdMap(idUsuario);
+                Usuario usuario = usuarioService.buscarPorId(idUsuario);
 
                 int ordinalTipoAcesso = Integer.parseInt(campos[1]);
                 EnumTipoAcesso tipoAcesso = EnumTipoAcesso.getByCodigo(ordinalTipoAcesso);
@@ -63,13 +63,12 @@ public class VisitanteLoader implements ApplicationRunner {
                 visitante.setTipoAcesso(tipoAcesso);
 
                 visitanteService.incluir(visitante);
-                visitanteService.incluirMap(visitante);
 
                 linha = lerArquivo.readLine();
             }
         }
-        log.info("lista Visitante do Map");
-        visitanteService.buscarTodosMap().forEach(visitante -> log.info(visitante.toString()));
+        log.info("lista Visitante carregada com sucesso");
+        visitanteService.listarTodos().forEach(visitante -> log.info(visitante.toString()));
     }
 
     private Visitante criarVistante(String[] campos) {
