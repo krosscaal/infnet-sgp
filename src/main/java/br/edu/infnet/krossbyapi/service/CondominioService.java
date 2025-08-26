@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
+import static br.edu.infnet.krossbyapi.util.MensagemCenter.REGISTRO_NAO_LOCALIZADO;
 
 @Service
 public class CondominioService implements ServiceBase<CondominioRecord, Long> {
@@ -87,7 +90,7 @@ public class CondominioService implements ServiceBase<CondominioRecord, Long> {
     }
 
     private Condominio buscarCondominioPorId(Long idCondominio) {
-        return repository.findById(idCondominio).orElseThrow(() -> new BusinessException("Condominio não encontrado"));
+        return repository.findById(idCondominio).orElseThrow(()-> new NoSuchElementException(REGISTRO_NAO_LOCALIZADO));
     }
 
     private CondominioRecord entityToRecord(Condominio obj) {

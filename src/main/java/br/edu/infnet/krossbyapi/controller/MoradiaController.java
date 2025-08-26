@@ -8,6 +8,7 @@ package br.edu.infnet.krossbyapi.controller;
 import br.edu.infnet.krossbyapi.domain.entity.Moradia;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.service.MoradiaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,7 +39,7 @@ public class MoradiaController extends ControllerBase<Moradia, Long> {
     }
 
     @Override
-    protected ResponseEntity<Moradia> acaoIncluir(Moradia dto) throws BusinessException {
+    protected ResponseEntity<Moradia> acaoIncluir(@Valid Moradia dto) throws BusinessException {
         return new ResponseEntity<>(moradiaService.incluir(dto), HttpStatus.CREATED);
     }
 

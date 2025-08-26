@@ -5,15 +5,13 @@
 
 package br.edu.infnet.krossbyapi.controller;
 
+import br.edu.infnet.krossbyapi.domain.entity.Moradia;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.service.UsuarioCondominioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -54,5 +52,10 @@ public class UsuarioCondominioController extends ControllerBase<UsuarioCondomini
     @PatchMapping(value = "/{id}/inativar")
     public ResponseEntity<UsuarioCondominio> inativar(@PathVariable Long id) throws BusinessException {
         return ResponseEntity.ok(service.inativar(id));
+    }
+
+    @GetMapping(value = "/moradias/{id}")
+    public ResponseEntity<List<Moradia>> acaoBuscarMoradiasPropietario(@PathVariable("id") Long id) throws BusinessException {
+        return ResponseEntity.ok(service.buscarMoradiasDoProprietario(id));
     }
 }

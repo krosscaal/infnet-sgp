@@ -10,10 +10,11 @@ import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.repository.UsuarioRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UsuarioService implements ServiceBase<Usuario, Long> {
@@ -35,11 +36,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long> {
 
     @Override
     public Usuario buscarPorId(Long idObjeto) {
-        try {
-            return this.buscarUsuarioPorId(idObjeto);
-        } catch (Exception e) {
-            throw new BusinessException(e.getMessage());
-        }
+        return this.buscarUsuarioPorId(idObjeto);
     }
 
     @Override
@@ -78,27 +75,29 @@ public class UsuarioService implements ServiceBase<Usuario, Long> {
     }
 
     @Override
-    public void excluir(Long idObjeto) throws BusinessException {
-        try {
-            this.buscarUsuarioPorId(idObjeto);
-            usuarioRepository.deleteById(idObjeto);
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
-        } catch (DataIntegrityViolationException e) {
-            throw new BusinessException("Usuário não pode ser apagado por estar em uso atualmente");
-        }
+    public void excluir(Long idObjeto) throws NoSuchElementException {
+        this.buscarUsuarioPorId(idObjeto);
+        usuarioRepository.deleteById(idObjeto);
     }
 
-    private Usuario buscarUsuarioPorId(Long idObjeto) throws UsuarioException {
-        return usuarioRepository.findById(idObjeto).orElseThrow(()-> new UsuarioException(String.format("Usuário informado com id %d, não existe", idObjeto)));
+    private Usuario buscarUsuarioPorId(Long idObjeto) throws NoSuchElementException {
+        return usuarioRepository.findById(idObjeto).orElseThrow(()-> new NoSuchElementException(String.format("Usuário informado com id %d, não existe", idObjeto)));
     }
 
-    public Usuario inativar(Long idObjeto) throws UsuarioException {
+    public Usuario inativar(Long idObjeto) throws NoSuchElementException {
         Usuario usuario = this.buscarUsuarioPorId(idObjeto);
         if (EnumTipoSituacao.INATIVO.equals(usuario.getSituacao())) {
             throw new UsuarioException("Situacao do usuário já está inativa!");
         }
         usuario.setSituacao(EnumTipoSituacao.INATIVO);
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario buscarPorCpf(String cpf) {
+        Optional<Usuario> usuarioOptional = usuarioRepository.findByCpf(cpf);
+        if (usuarioOptional.isEmpty()) {
+            throw new NoSuchElementException(String.format("Usuário com CPF:%s não encontrado!", cpf));
+        }
+        return usuarioOptional.get();
     }
 }

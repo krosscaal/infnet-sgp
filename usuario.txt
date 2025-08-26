@@ -1,11 +1,18 @@
-usuario a;propietario a;241.250.080-00;null;41999911111;null;1
-usuario b;morador b;497.102.780-70;null;41999922221;null;1
-usuario c;morador c;497.102.780-70;null;41999922222;null;1
-usuario d;morador d;497.102.780-88;null;41984793815;null;1
-Pedro;Costa;241.250.080-00;null;41984793810;null;1
-Maria;Alves;497.102.780-70;null;41984793811;null;1
-Julio;Souza;609.187.220-63;null;41984793812;null;1
-Pedro;Costa;241.250.080-00;null;41984793813;null;1
-Maria;Alves;497.102.780-70;null;41984793814;null;1
-Julio;Souza;609.187.220-63;null;41984793815;null;1
-Carlos;Costa;241.250.080-00;null;41984793865;null;1
+usuario A;propietario A;241.250.080-00;null;41999911111;null;1
+usuario B;morador B;864.699.260-88;null;41999922221;null;1
+usuario C;morador C;389.814.220-52;null;41999922222;null;1
+usuario D;morador D;687.187.270-18;null;41984793815;null;1
+Pedro;Costa;704.660.530-02;null;41984793810;null;1
+Maria;Alves;670.061.350-79;null;41984793811;null;1
+Julio;Souza;814.135.740-92;null;41984793812;null;1
+Pedro;Costa;223.543.670-66;null;41984793813;null;1
+Maria;Alves;736.661.190-50;null;41984793814;null;1
+Julio;Souza;823.234.660-46;null;41984793815;null;1
+Carlos;Costa;344.306.620-88;null;41984793865;null;1
+usuario E;propietario E;677.026.960-01;null;41999911111;null;1
+usuario F;morador F;869.938.030-54;null;41999922221;null;1
+usuario G;morador G;768.278.080-09;null;41999922222;null;1
+usuario H;morador H;949.044.850-84;null;41984793815;null;1
+usuario I;morador I;587.670.040-16;null;41984793815;null;1
+usuario J;portaria J;806.938.100-09;null;41984793815;null;1
+usuario L;portaria K;463.518.850-78;null;41984793815;null;1

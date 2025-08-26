@@ -13,6 +13,7 @@ import br.edu.infnet.krossbyapi.repository.CorrespondenciaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CorrespondenciaService implements ServiceBase<Correspondencia, Long> {
@@ -81,6 +82,6 @@ public class CorrespondenciaService implements ServiceBase<Correspondencia, Long
     }
 
     private Correspondencia buscarCorrespondenciaPorId(Long id) {
-        return correspondenciaRepository.findById(id).orElseThrow(()-> new BusinessException(String.format("Correspondencia com id:%d não encontrado", id)));
+        return correspondenciaRepository.findById(id).orElseThrow(()-> new NoSuchElementException(String.format("Correspondencia com id:%d não encontrado", id)));
     }
 }

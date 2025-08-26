@@ -47,7 +47,7 @@ public class UsuarioCondominio extends EntidadeBase {
     private EnumTipoSituacao situacao;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Moradia> moradias = new ArrayList<>();
 
     @Override

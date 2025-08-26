@@ -14,6 +14,7 @@ import br.edu.infnet.krossbyapi.repository.UsuarioSistemaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long> {
@@ -72,18 +73,13 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long> 
     }
 
     @Override
-    public void excluir(Long idObjeto) throws BusinessException {
-        try {
-            this.buscarUsuarioSistemaPorId(idObjeto);
-            repository.deleteById(idObjeto);
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
-        }
-
+    public void excluir(Long idObjeto) throws NoSuchElementException {
+        this.buscarUsuarioSistemaPorId(idObjeto);
+        repository.deleteById(idObjeto);
     }
 
-    private UsuarioSistema buscarUsuarioSistemaPorId(Long idUsuario) throws UsuarioException {
-        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuario Sistema não encontrado"));
+    private UsuarioSistema buscarUsuarioSistemaPorId(Long idUsuario) throws NoSuchElementException {
+        return repository.findById(idUsuario).orElseThrow(()-> new NoSuchElementException("Usuario Sistema não encontrado"));
     }
 
     private void validarUsuarioSistema(UsuarioSistema entidade) throws UsuarioException {
@@ -92,17 +88,13 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long> 
         }
     }
 
-    public UsuarioSistema inativar(Long id) throws BusinessException {
-        try {
-            UsuarioSistema usuarioSistema = this.buscarUsuarioSistemaPorId(id);
-            if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
-                throw new UsuarioException("Usuario Sistema já está inativo.");
-            }
-            usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
-            return repository.save(usuarioSistema);
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
+    public UsuarioSistema inativar(Long id) throws NoSuchElementException {
+        UsuarioSistema usuarioSistema = this.buscarUsuarioSistemaPorId(id);
+        if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
+            throw new UsuarioException("Usuario Sistema já está inativo.");
         }
+        usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
+        return repository.save(usuarioSistema);
     }
 
 }

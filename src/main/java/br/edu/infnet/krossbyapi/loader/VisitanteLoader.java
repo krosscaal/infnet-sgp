@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 
@@ -74,16 +76,19 @@ public class VisitanteLoader implements ApplicationRunner {
     private Visitante criarVistante(String[] campos) {
         Long idMoradia = Long.valueOf(campos[3]);
         Long idUsuarioAutorizado = Long.valueOf(campos[4]);
+        String dataAcesso = campos[6];
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime localDateTimeDataAcesso = LocalDateTime.parse(dataAcesso, formatar);
 
         Moradia moradia = moradiaService.buscarPorId(idMoradia);
         UsuarioCondominio usuarioCondominio = usuarioCondominioService.buscarPorId(idUsuarioAutorizado);
-
 
         Visitante visitante = new Visitante();
         visitante.setCartaoAcesso(campos[2]);
         visitante.setMoradiaDestinoVisitante(moradia);
         visitante.setUsuarioAutorizacao(usuarioCondominio);
         visitante.setObservacao(campos[5]);
+        visitante.setIngresso(localDateTimeDataAcesso);
         return visitante;
     }
 }

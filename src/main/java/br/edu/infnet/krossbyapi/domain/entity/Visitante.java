@@ -7,6 +7,7 @@ package br.edu.infnet.krossbyapi.domain.entity;
 
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoAcesso;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +20,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 import static br.edu.infnet.krossbyapi.util.MensagemCenter.NAO_NULL;
 
@@ -55,9 +58,18 @@ public class Visitante extends EntidadeBase {
     @Column(length = 150)
     private String observacao;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @NotNull(message = NAO_NULL)
+    @Column(name = "data_ingresso", nullable = false)
+    private LocalDateTime ingresso;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+    @Column(name = "data_saida")
+    private LocalDateTime saida;
+
     @Override
     public String toString() {
-        return String.format("Visitante id:%d %s %s %s %s %s %s ",
-                getId(), getUsuarioVisitante().toString(), tipoAcesso.getDescricao(), cartaoAcesso, moradiaDestinoVisitante.getNumeroUnidade(), usuarioAutorizacao.getId(), observacao);
+        return String.format("Visitante id:%d %s %s %s %s %s %s %s",
+                getId(), getUsuarioVisitante().toString(), tipoAcesso.getDescricao(), cartaoAcesso, moradiaDestinoVisitante.getNumeroUnidade(), usuarioAutorizacao.getId(), observacao, ingresso);
     }
 }

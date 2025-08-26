@@ -9,16 +9,18 @@ import br.edu.infnet.krossbyapi.domain.entity.Moradia;
 import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
 import br.edu.infnet.krossbyapi.domain.entity.Visitante;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoAcesso;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.repository.VisitanteRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class VisitanteService implements ServiceBase<Visitante, Long> {
@@ -27,8 +29,6 @@ public class VisitanteService implements ServiceBase<Visitante, Long> {
     private final UsuarioService usuarioService;
     private final MoradiaService moradiaService;
     private final UsuarioCondominioService usuarioCondominioService;
-    private final Map<Long, Visitante> visitanteMap = new ConcurrentHashMap<>();
-    private final AtomicLong visitanteId = new AtomicLong(1);
 
     public VisitanteService(VisitanteRepository visitanteRepository, UsuarioService usuarioService, MoradiaService moradiaService, UsuarioCondominioService usuarioCondominioService) {
         this.visitanteRepository = visitanteRepository;
@@ -52,18 +52,14 @@ public class VisitanteService implements ServiceBase<Visitante, Long> {
     }
 
     @Override
-    public Visitante incluir(Visitante entidade) throws BusinessException {
-        try {
-            Usuario usuarioObj = usuarioService.buscarPorId(entidade.getUsuarioVisitante().getId());
-            Moradia moradiaDestinoObj = moradiaService.buscarPorId(entidade.getMoradiaDestinoVisitante().getId());entidade.setId(null);
-            UsuarioCondominio autorizadoObj = usuarioCondominioService.buscarPorId(entidade.getUsuarioAutorizacao().getId());
-            entidade.setUsuarioVisitante(usuarioObj);
-            entidade.setMoradiaDestinoVisitante(moradiaDestinoObj);
-            entidade.setUsuarioAutorizacao(autorizadoObj);
-            return visitanteRepository.save(entidade);
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
-        }
+    public Visitante incluir(Visitante entidade) {
+        Usuario usuarioObj = usuarioService.buscarPorId(entidade.getUsuarioVisitante().getId());
+        Moradia moradiaDestinoObj = moradiaService.buscarPorId(entidade.getMoradiaDestinoVisitante().getId());entidade.setId(null);
+        UsuarioCondominio autorizadoObj = usuarioCondominioService.buscarPorId(entidade.getUsuarioAutorizacao().getId());
+        entidade.setUsuarioVisitante(usuarioObj);
+        entidade.setMoradiaDestinoVisitante(moradiaDestinoObj);
+        entidade.setUsuarioAutorizacao(autorizadoObj);
+        return visitanteRepository.save(entidade);
     }
 
     @Override
@@ -87,16 +83,27 @@ public class VisitanteService implements ServiceBase<Visitante, Long> {
     }
 
     @Override
-    public void excluir(Long idObjeto) throws BusinessException {
-        try {
-            this.buscarPorIdVisitante(idObjeto);
-            this.visitanteRepository.deleteById(idObjeto);
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
-        }
+    public void excluir(Long idObjeto) throws NoSuchElementException {
+        this.buscarPorIdVisitante(idObjeto);
+        this.visitanteRepository.deleteById(idObjeto);
     }
 
-    private Visitante buscarPorIdVisitante(Long idVisitante) throws UsuarioException {
-        return visitanteRepository.findById(idVisitante).orElseThrow(()-> new UsuarioException("Registro de Visitante não encontrado!"));
+    private Visitante buscarPorIdVisitante(Long idVisitante) throws NoSuchElementException {
+        return visitanteRepository.findById(idVisitante).orElseThrow(()-> new NoSuchElementException("Registro de Visitante não encontrado!"));
+    }
+
+    public List<Visitante> buscarVisitantesPorDataIngresso(String data) {
+
+        String dataInicio = data + " 00:00:00";
+        String dataFim = data + " 23:59:59";
+        DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        LocalDateTime dataInicioBusca = LocalDateTime.parse(dataInicio, formatar);
+        LocalDateTime dataFimBusca = LocalDateTime.parse(dataFim, formatar);
+        return visitanteRepository.findAllByIngressoBetween(dataInicioBusca, dataFimBusca);
+    }
+
+    public List<Visitante> buscarPorCpf(String cpf) {
+        return visitanteRepository.findByCpf(cpf, EnumTipoAcesso.VISITANTE);
     }
 }

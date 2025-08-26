@@ -8,10 +8,10 @@ package br.edu.infnet.krossbyapi.controller;
 import br.edu.infnet.krossbyapi.domain.entity.Visitante;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.service.VisitanteService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class VisitanteController extends ControllerBase<Visitante, Long> {
     }
 
     @Override
-    protected ResponseEntity<Visitante> acaoIncluir(Visitante dto) throws BusinessException {
+    protected ResponseEntity<Visitante> acaoIncluir(@Valid Visitante dto)  {
         return new ResponseEntity<>(visitanteService.incluir(dto), HttpStatus.CREATED);
     }
 
@@ -51,4 +51,13 @@ public class VisitanteController extends ControllerBase<Visitante, Long> {
         visitanteService.excluir(id);
     }
 
+    @GetMapping(value = "/cpf")
+    public ResponseEntity<List<Visitante>> acaoBuscarPorCpf(@RequestParam(value = "cpf") String cpf) throws BusinessException {
+        return ResponseEntity.ok(visitanteService.buscarPorCpf(cpf));
+    }
+
+    @GetMapping(value = "/data")
+    public ResponseEntity<List<Visitante>> acaoBuscarVisitantesPorDataIngreso(@RequestParam(value = "data") String data) {
+        return ResponseEntity.ok(visitanteService.buscarVisitantesPorDataIngresso(data));
+    }
 }

@@ -8,6 +8,7 @@ package br.edu.infnet.krossbyapi.controller;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioSistema;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.service.UsuarioSistemaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,7 +39,7 @@ public class UsuarioSistemaController extends ControllerBase<UsuarioSistema, Lon
     }
 
     @Override
-    protected ResponseEntity<UsuarioSistema> acaoIncluir(UsuarioSistema dto) throws BusinessException {
+    protected ResponseEntity<UsuarioSistema> acaoIncluir(@Valid UsuarioSistema dto) throws BusinessException {
         return new ResponseEntity<>(service.incluir(dto), HttpStatus.CREATED);
     }
 

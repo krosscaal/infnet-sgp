@@ -38,12 +38,12 @@ public class Moradia extends EntidadeBase {
     private EnumTipoMoradia tipoMoradia;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "propietario_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "propietario_id")
     private UsuarioCondominio propietario;
 
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "morador_id", referencedColumnName = "id")
     private UsuarioCondominio morador;
 

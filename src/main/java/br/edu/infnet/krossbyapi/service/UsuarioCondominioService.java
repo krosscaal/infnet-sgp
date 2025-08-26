@@ -5,8 +5,10 @@
 
 package br.edu.infnet.krossbyapi.service;
 
+import br.edu.infnet.krossbyapi.domain.entity.Moradia;
 import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
+import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoResidente;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.exception.UsuarioException;
@@ -14,6 +16,7 @@ import br.edu.infnet.krossbyapi.repository.UsuarioCondominioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, Long> {
@@ -72,17 +75,13 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
     }
 
     @Override
-    public void excluir(Long idObjeto) throws BusinessException {
-        try {
-            this.buscarUsuarioCondominioPorId(idObjeto);
-            this.repository.deleteById(idObjeto);
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
-        }
+    public void excluir(Long idObjeto) throws NoSuchElementException {
+        this.buscarUsuarioCondominioPorId(idObjeto);
+        this.repository.deleteById(idObjeto);
     }
 
-    private UsuarioCondominio buscarUsuarioCondominioPorId(Long idUsuario) throws UsuarioException {
-        return repository.findById(idUsuario).orElseThrow(()-> new UsuarioException("Usuário Condominio não encontrado"));
+    private UsuarioCondominio buscarUsuarioCondominioPorId(Long idUsuario) throws NoSuchElementException {
+        return repository.findById(idUsuario).orElseThrow(()-> new NoSuchElementException("Usuário Condominio não encontrado"));
     }
     public UsuarioCondominio inativar(Long idUsuario) throws BusinessException {
 
@@ -92,5 +91,13 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
         }
         usuarioCondominioObj.setSituacao(EnumTipoSituacao.INATIVO);
         return repository.save(usuarioCondominioObj);
+    }
+
+    public List<Moradia> buscarMoradiasDoProprietario(Long idUsuario) throws NoSuchElementException {
+        UsuarioCondominio usuarioCondominioObj = this.buscarUsuarioCondominioPorId(idUsuario);
+        if (!usuarioCondominioObj.getTipoResidente().equals(EnumTipoResidente.PROPIETARIO)) {
+            throw new BusinessException("Usuário informado não é propietario");
+        }
+        return repository.findMoradiasPorId(idUsuario);
     }
 }

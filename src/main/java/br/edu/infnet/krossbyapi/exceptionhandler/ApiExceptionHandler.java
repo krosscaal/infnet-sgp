@@ -10,6 +10,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @RestControllerAdvice
@@ -49,6 +51,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, apiErrors, new HttpHeaders(), status, request);
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> handleNoSuchElementException(final NoSuchElementException ex, final WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiErrors apiErrors = new ApiErrors(status.value(), LocalDateTime.now().format(dataFormatada), ex.getMessage());
+        return handleExceptionInternal(ex, apiErrors, new HttpHeaders(), status, request);
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(final DataIntegrityViolationException ex, final WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        StringBuilder mensagem = new StringBuilder("<< CONFLITO COM ID DE ALGUMA ENTIDADE ENVOLVIDA NA OPERAÇÃO >> ")
+                .append("MENSAGEM DO ERRO -->: ")
+                .append(ex.getMessage());
+        ApiErrors apiErrors = new ApiErrors(status.value(), LocalDateTime.now().format(dataFormatada), mensagem.toString());
+        return handleExceptionInternal(ex, apiErrors, new HttpHeaders(), status, request);
+    }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 

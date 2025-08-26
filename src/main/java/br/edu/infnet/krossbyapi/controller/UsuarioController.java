@@ -12,10 +12,7 @@ import br.edu.infnet.krossbyapi.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,5 +53,10 @@ public class UsuarioController extends ControllerBase<Usuario, Long> {
     @PatchMapping(value = "/{id}/inativar")
     public ResponseEntity<Usuario> inativar(@PathVariable Long id) throws UsuarioException {
         return ResponseEntity.ok(usuarioService.inativar(id));
+    }
+
+    @GetMapping(value = "/cpf")
+    public ResponseEntity<Usuario> acaoBuscarPorCpf(@RequestParam(value = "cpf") String cpf) throws BusinessException {
+        return ResponseEntity.ok(usuarioService.buscarPorCpf(cpf));
     }
 }

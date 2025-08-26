@@ -8,6 +8,7 @@ package br.edu.infnet.krossbyapi.controller;
 import br.edu.infnet.krossbyapi.domain.entity.Correspondencia;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.service.CorrespondenciaService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,7 @@ public class CorrespondenciaController extends ControllerBase<Correspondencia, L
     }
 
     @Override
-    protected ResponseEntity<Correspondencia> acaoIncluir(Correspondencia dto) throws BusinessException {
+    protected ResponseEntity<Correspondencia> acaoIncluir(@Valid Correspondencia dto) throws BusinessException {
         return new ResponseEntity<>(service.incluir(dto), HttpStatus.CREATED);
     }
 

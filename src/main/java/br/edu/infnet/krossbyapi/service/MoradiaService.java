@@ -6,19 +6,23 @@
 package br.edu.infnet.krossbyapi.service;
 
 import br.edu.infnet.krossbyapi.domain.entity.Moradia;
+import br.edu.infnet.krossbyapi.domain.entity.UsuarioCondominio;
 import br.edu.infnet.krossbyapi.domain.enumerator.EnumTipoSituacao;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
 import br.edu.infnet.krossbyapi.repository.MoradiaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class MoradiaService implements ServiceBase<Moradia, Long> {
     private final MoradiaRepository moradiaRepository;
+    private final UsuarioCondominioService usuarioCondominioService;
 
-    public MoradiaService(MoradiaRepository moradiaRepository) {
+    public MoradiaService(MoradiaRepository moradiaRepository, UsuarioCondominioService usuarioCondominioService) {
         this.moradiaRepository = moradiaRepository;
+        this.usuarioCondominioService = usuarioCondominioService;
     }
 
 
@@ -43,12 +47,12 @@ public class MoradiaService implements ServiceBase<Moradia, Long> {
     @Override
     public Moradia alterar(Long idObjeto, Moradia entidade) throws BusinessException {
         this.validarMoradia(entidade);
+        UsuarioCondominio morador = usuarioCondominioService.buscarPorId(entidade.getMorador().getId());
         Moradia moradia = this.buscarPorId(idObjeto);
         moradia.setSituacao(entidade.getSituacao());
         moradia.setTipoMoradia(entidade.getTipoMoradia());
         moradia.setNumeroUnidade(entidade.getNumeroUnidade());
-        moradia.setPropietario(entidade.getPropietario());
-        moradia.setMorador(entidade.getMorador());
+        moradia.setMorador(morador);
         moradia.setQuadraTorreBloco(entidade.getQuadraTorreBloco());
         moradia.setLote(entidade.getLote());
         return moradiaRepository.save(moradia);
@@ -59,8 +63,8 @@ public class MoradiaService implements ServiceBase<Moradia, Long> {
         this.buscarMoradiaPorId(idObjeto);
         throw new BusinessException("ATENÇÃO NEMHUMA MORADIA PODE SER APAGADA, SOMENTE É PERMITIDO INATIVAR");
     }
-    private Moradia buscarMoradiaPorId(Long idObjeto) throws BusinessException {
-        return moradiaRepository.findById(idObjeto).orElseThrow(()-> new BusinessException("Moradia não encontrada"));
+    private Moradia buscarMoradiaPorId(Long idObjeto) throws NoSuchElementException {
+        return moradiaRepository.findById(idObjeto).orElseThrow(()-> new NoSuchElementException("Moradia não encontrada"));
     }
     public Moradia inativar(Long idMoradia) throws BusinessException {
         Moradia moradia = this.buscarMoradiaPorId(idMoradia);
