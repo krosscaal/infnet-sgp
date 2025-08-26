@@ -15,15 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class CondominioService implements ServiceBase<CondominioRecord, Long>{
+public class CondominioService implements ServiceBase<CondominioRecord, Long> {
     private final CondominioRepository repository;
-    private final Map<Long, Condominio> condominioMap = new ConcurrentHashMap<>();
-    private final AtomicLong condominioId = new AtomicLong(10);
 
     public CondominioService(CondominioRepository repository) {
         this.repository = repository;
@@ -108,60 +103,6 @@ public class CondominioService implements ServiceBase<CondominioRecord, Long>{
                 obj.getNomeSindico(),
                 obj.getTelefoneSindico(),
                 obj.getSituacao());
-    }
-
-    private void existeEmMap(Long idCondominio) {
-        if (!this.condominioMap.containsKey(idCondominio)) {
-            throw new BusinessException("Condominio não encontrado!");
-        }
-    }
-
-    public Condominio incluirMap(CondominioRecord condominioRecord) {
-        Condominio condominio = CondominioFactory.criarCondominio(condominioRecord);
-
-        condominio.setId(condominioId.getAndIncrement());
-
-        condominioMap.put(condominio.getId(), condominio);
-
-        return condominio;
-    }
-
-    public List<Condominio> listarTodosMap() {
-        return new ArrayList<>(condominioMap.values());
-    }
-
-    public Condominio buscarPorIdMap(Long idObjeto) {
-        this.existeEmMap(idObjeto);
-        return this.condominioMap.get(idObjeto);
-    }
-    public Condominio alterarMap(Long idCondominio, CondominioRecord entidade) throws BusinessException {
-        this.existeEmMap(idCondominio);
-        Condominio condominioObj = this.condominioMap.get(idCondominio);
-        condominioObj.setNomeCondominio(entidade.nomeCondominio());
-        condominioObj.setTipoCondominio(entidade.tipoCondominio());
-        condominioObj.setCnpj(entidade.cnpj());
-        condominioObj.setTelefoneContato1(entidade.telefoneContato1());
-        condominioObj.setTelefoneContato2(entidade.telefoneContato2());
-        condominioObj.setEndereco(entidade.endereco());
-        condominioObj.setNomeSindico(entidade.nomeSindico());
-        condominioObj.setTelefoneSindico(entidade.telefoneSindico());
-        this.condominioMap.put(idCondominio, condominioObj);
-        return this.condominioMap.get(idCondominio);
-    }
-
-    public void excluirMap(Long idCondominio) {
-        this.existeEmMap(idCondominio);
-        this.condominioMap.remove(idCondominio);
-    }
-    public Condominio inativarMap(Long idCondominio) throws BusinessException {
-        this.existeEmMap(idCondominio);
-        Condominio condominioObj = this.condominioMap.get(idCondominio);
-        if (EnumTipoSituacao.INATIVO.equals(condominioObj.getSituacao())) {
-            throw new BusinessException("Condominio já está inativo!");
-        }
-        condominioObj.setSituacao(EnumTipoSituacao.INATIVO);
-        this.condominioMap.put(idCondominio, condominioObj);
-        return condominioObj;
     }
 
 }

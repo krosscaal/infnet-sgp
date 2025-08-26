@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 @Order(7)
@@ -44,19 +46,22 @@ public class CorrespondenciaLoader implements ApplicationRunner {
             while (linha != null) {
                 campos = linha.split(";");
                 Long idMoradia = Long.valueOf(campos[0]);
-                Moradia moradia = moradiaService.buscarPorIdMap(idMoradia);
+                String dataRecepcao = campos[3] + " 14:00:00";
+                DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                LocalDateTime localDateTimeDataRecepcao = LocalDateTime.parse(dataRecepcao, formatar);
+                Moradia moradia = moradiaService.buscarPorId(idMoradia);
                 Correspondencia correspondencia = new Correspondencia();
                 correspondencia.setNomeDestinatario(campos[1]);
                 correspondencia.setTelefoneDestinatario(campos[2]);
-                correspondencia.setUsuarioRecepcao(usuarioSistemaService.buscarPorIdMap(2L));
+                correspondencia.setUsuarioRecepcao(usuarioSistemaService.buscarPorId(2L));
                 correspondencia.setMoradiaEntrega(moradia);
+                correspondencia.setDataRecepcao(localDateTimeDataRecepcao);
 
                 correspondenciaService.incluir(correspondencia);
-                correspondenciaService.incluirMap(correspondencia);
                 linha = lerArquivo.readLine();
             }
         }
-        log.info("lista Correspondencia do Map");
-        correspondenciaService.buscarTodosMap().forEach(correspondencia -> log.info(correspondencia.toString()));
+        log.info("lista Correspondencia carregada com sucesso");
+        correspondenciaService.listarTodos().forEach(correspondencia -> log.info(correspondencia.toString()));
     }
 }

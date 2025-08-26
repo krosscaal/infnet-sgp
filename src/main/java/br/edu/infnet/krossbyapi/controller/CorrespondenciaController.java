@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/correspondencia")
-public class CorrespondenciaController extends ControllerBase<Correspondencia, Long> implements ControllerMap<Correspondencia, Long> {
+public class CorrespondenciaController extends ControllerBase<Correspondencia, Long> {
     private final CorrespondenciaService service;
 
     public CorrespondenciaController(CorrespondenciaService service) {
@@ -49,30 +49,4 @@ public class CorrespondenciaController extends ControllerBase<Correspondencia, L
     protected void acaoExcluir(Long id) throws BusinessException {
         service.excluir(id);
     }
-
-    @Override
-    public Correspondencia obterPorIdMap(Long id) {
-        return service.buscarPorIdMap(id);
-    }
-
-    @Override
-    public List<Correspondencia> obterListaMap() {
-        return service.buscarTodosMap();
-    }
-
-    @Override
-    public Correspondencia incluirMap(Correspondencia objeto) {
-        return service.incluirMap(objeto);
-    }
-
-    @Override
-    public Correspondencia alterarMap(Long id, Correspondencia objeto) {
-        return service.alterarMap(id, objeto);
-    }
-
-    @Override
-    public void excluirMap(Long id) {
-        service.excluirMap(id);
-    }
-
 }

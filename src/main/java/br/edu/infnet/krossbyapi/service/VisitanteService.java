@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMap<Visitante, Long>{
+public class VisitanteService implements ServiceBase<Visitante, Long> {
 
     private final VisitanteRepository visitanteRepository;
     private final UsuarioService usuarioService;
@@ -98,60 +98,5 @@ public class VisitanteService implements ServiceBase<Visitante, Long>, ServiceMa
 
     private Visitante buscarPorIdVisitante(Long idVisitante) throws UsuarioException {
         return visitanteRepository.findById(idVisitante).orElseThrow(()-> new UsuarioException("Registro de Visitante não encontrado!"));
-    }
-
-
-    @Override
-    public Visitante incluirMap(Visitante objeto) {
-        Usuario usuarioObj = usuarioService.buscarPorIdMap(objeto.getUsuarioVisitante().getId());
-        Moradia moradiaDestinoObj = moradiaService.buscarPorIdMap(objeto.getMoradiaDestinoVisitante().getId());
-        UsuarioCondominio autorizadoObj = usuarioCondominioService.buscarPorIdMap(objeto.getUsuarioAutorizacao().getId());
-
-        objeto.setUsuarioVisitante(usuarioObj);
-        objeto.setMoradiaDestinoVisitante(moradiaDestinoObj);
-        objeto.setUsuarioAutorizacao(autorizadoObj);
-        objeto.setId(visitanteId.getAndIncrement());
-        this.visitanteMap.put(objeto.getId(), objeto);
-        return objeto;
-    }
-
-    @Override
-    public Visitante alterarMap(Long idObjeto, Visitante objeto) {
-        this.verificaExisteMap(idObjeto);
-        Usuario usuarioObj = usuarioService.buscarPorIdMap(objeto.getUsuarioVisitante().getId());
-        Moradia moradiaDestinoObj = moradiaService.buscarPorIdMap(objeto.getMoradiaDestinoVisitante().getId());
-        UsuarioCondominio autorizadoObj = usuarioCondominioService.buscarPorIdMap(objeto.getUsuarioAutorizacao().getId());
-        Visitante visitante = this.visitanteMap.get(idObjeto);
-
-        visitante.setUsuarioVisitante(usuarioObj);
-        visitante.setCartaoAcesso(objeto.getCartaoAcesso());
-        visitante.setTipoAcesso(objeto.getTipoAcesso());
-        visitante.setUsuarioAutorizacao(autorizadoObj);
-        visitante.setMoradiaDestinoVisitante(moradiaDestinoObj);
-        visitante.setObservacao(objeto.getObservacao());
-        this.visitanteMap.put(idObjeto, visitante);
-        return visitante;
-    }
-
-    @Override
-    public Visitante buscarPorIdMap(Long idObjeto) {
-        this.verificaExisteMap(idObjeto);
-        return this.visitanteMap.get(idObjeto);
-    }
-
-    @Override
-    public List<Visitante> buscarTodosMap() {
-        return new ArrayList<>(visitanteMap.values());
-    }
-
-    @Override
-    public void excluirMap(Long idObjeto) {
-        this.verificaExisteMap(idObjeto);
-        this.visitanteMap.remove(idObjeto);
-    }
-    private void verificaExisteMap(Long idObjeto) {
-        if (!this.visitanteMap.containsKey(idObjeto)) {
-            throw new BusinessException("Registro de Visitante não existe");
-        }
     }
 }

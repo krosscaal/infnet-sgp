@@ -13,18 +13,12 @@ import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.repository.UsuarioCondominioRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, Long>, ServiceMap<UsuarioCondominio, Long> {
+public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, Long> {
     private final UsuarioCondominioRepository repository;
     private final UsuarioService usuarioService;
-    private final Map<Long, UsuarioCondominio> usuarioCondominioMap = new ConcurrentHashMap<>();
-    private final AtomicLong usuarioCondominioId = new AtomicLong(1);
 
     public UsuarioCondominioService(UsuarioCondominioRepository repository, UsuarioService usuarioService) {
         this.repository = repository;
@@ -98,68 +92,5 @@ public class UsuarioCondominioService implements ServiceBase<UsuarioCondominio, 
         }
         usuarioCondominioObj.setSituacao(EnumTipoSituacao.INATIVO);
         return repository.save(usuarioCondominioObj);
-    }
-
-    @Override
-    public UsuarioCondominio incluirMap(UsuarioCondominio objeto) {
-        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
-        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
-
-        objeto.setId(usuarioCondominioId.getAndIncrement());
-        objeto.setSituacao(EnumTipoSituacao.ATIVO);
-        objeto.setUsuario(usuario);
-        usuarioCondominioMap.put(objeto.getId(), objeto);
-        return objeto;
-    }
-
-    @Override
-    public UsuarioCondominio alterarMap(Long idObjeto, UsuarioCondominio objeto) {
-        this.verificaExisteEmMap(idObjeto);
-        UsuarioCondominio usuarioCondominioObj = this.usuarioCondominioMap.get(idObjeto);
-
-        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
-        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
-
-        usuarioCondominioObj.setUsuario(usuario);
-        usuarioCondominioObj.setEmail(objeto.getEmail());
-        usuarioCondominioObj.setTipoResidente(objeto.getTipoResidente());
-        usuarioCondominioObj.setSituacao(objeto.getSituacao());
-        usuarioCondominioObj.setMoradias(objeto.getMoradias());
-        this.usuarioCondominioMap.put(idObjeto, usuarioCondominioObj);
-        return usuarioCondominioObj;
-    }
-
-    @Override
-    public UsuarioCondominio buscarPorIdMap(Long idObjeto) {
-        this.verificaExisteEmMap(idObjeto);
-        return this.usuarioCondominioMap.get(idObjeto);
-    }
-
-    @Override
-    public List<UsuarioCondominio> buscarTodosMap() {
-        return new ArrayList<>(usuarioCondominioMap.values());
-    }
-
-    @Override
-    public void excluirMap(Long idObjeto) {
-        this.verificaExisteEmMap(idObjeto);
-        this.usuarioCondominioMap.remove(idObjeto);
-    }
-
-    private void verificaExisteEmMap(Long idUsuario) {
-        if (!this.usuarioCondominioMap.containsKey(idUsuario)) {
-            throw new BusinessException("USuário não existe.");
-        }
-    }
-
-    public UsuarioCondominio inativarMap(Long idUsuario) {
-        this.verificaExisteEmMap(idUsuario);
-        UsuarioCondominio usuarioCondominioObj = this.usuarioCondominioMap.get(idUsuario);
-        if (EnumTipoSituacao.INATIVO.equals(usuarioCondominioObj.getSituacao())) {
-            throw new BusinessException("Usuário já está inativo");
-        }
-        usuarioCondominioObj.setSituacao(EnumTipoSituacao.INATIVO);
-        this.usuarioCondominioMap.put(idUsuario, usuarioCondominioObj);
-        return usuarioCondominioObj;
     }
 }

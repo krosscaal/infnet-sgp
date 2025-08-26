@@ -1,11 +1,11 @@
-usuario;propietario;24125008000;null;4199991111;null;1
-usuario2;morador;49710278070;null;4199992222;null;1
-usuario3;morador;49710278070;null;4199992222;null;1
-usuario4;morador;49710278088;null;4199992222;null;1
-Pedro;Costa;24125008000;null;4199991111;null;1
-Maria;Alves;49710278070;null;4199992222;null;1
-Julio;Souza;60918722063;null;4199993333;null;1
-Pedro;Costa;24125008000;null;4199991111;null;1
-Maria;Alves;49710278070;null;4199992222;null;1
-Julio;Souza;60918722063;null;4199993333;null;1
-Carlos;Costa;24125008000;null;4199991111;null;1
+usuario a;propietario a;241.250.080-00;null;41999911111;null;1
+usuario b;morador b;497.102.780-70;null;41999922221;null;1
+usuario c;morador c;497.102.780-70;null;41999922222;null;1
+usuario d;morador d;497.102.780-88;null;41984793815;null;1
+Pedro;Costa;241.250.080-00;null;41984793810;null;1
+Maria;Alves;497.102.780-70;null;41984793811;null;1
+Julio;Souza;609.187.220-63;null;41984793812;null;1
+Pedro;Costa;241.250.080-00;null;41984793813;null;1
+Maria;Alves;497.102.780-70;null;41984793814;null;1
+Julio;Souza;609.187.220-63;null;41984793815;null;1
+Carlos;Costa;241.250.080-00;null;41984793865;null;1

@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/usuario-condominio")
-public class UsuarioCondominioController extends ControllerBase<UsuarioCondominio, Long> implements ControllerMap<UsuarioCondominio, Long>{
+public class UsuarioCondominioController extends ControllerBase<UsuarioCondominio, Long> {
     private final UsuarioCondominioService service;
 
     public UsuarioCondominioController(UsuarioCondominioService service) {
@@ -54,35 +54,5 @@ public class UsuarioCondominioController extends ControllerBase<UsuarioCondomini
     @PatchMapping(value = "/{id}/inativar")
     public ResponseEntity<UsuarioCondominio> inativar(@PathVariable Long id) throws BusinessException {
         return ResponseEntity.ok(service.inativar(id));
-    }
-
-    @Override
-    public UsuarioCondominio obterPorIdMap(Long id) {
-        return service.buscarPorIdMap(id);
-    }
-
-    @Override
-    public List<UsuarioCondominio> obterListaMap() {
-        return service.buscarTodosMap();
-    }
-
-    @Override
-    public UsuarioCondominio incluirMap(UsuarioCondominio objeto) {
-        return service.incluirMap(objeto);
-    }
-
-    @Override
-    public UsuarioCondominio alterarMap(Long id, UsuarioCondominio objeto) {
-        return service.alterarMap(id, objeto);
-    }
-
-    @Override
-    public void excluirMap(Long id) {
-        service.excluirMap(id);
-    }
-
-    @PatchMapping(value = "/map/{id}/inativar")
-    public UsuarioCondominio inativarMap(@PathVariable("id") Long id) {
-        return service.inativarMap(id);
     }
 }

@@ -13,18 +13,12 @@ import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.repository.UsuarioSistemaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>, ServiceMap<UsuarioSistema, Long> {
+public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long> {
     private final UsuarioSistemaRepository repository;
     private final UsuarioService usuarioService;
-    private final Map<Long, UsuarioSistema> usuarioSistemaMap = new ConcurrentHashMap<>();
-    private final AtomicLong usuarioSistemaId = new AtomicLong(1);
 
     public UsuarioSistemaService(UsuarioSistemaRepository repository, UsuarioService usuarioService) {
         this.repository = repository;
@@ -111,73 +105,4 @@ public class UsuarioSistemaService implements ServiceBase<UsuarioSistema, Long>,
         }
     }
 
-
-    @Override
-    public UsuarioSistema incluirMap(UsuarioSistema objeto) {
-        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
-        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
-
-        this.validarUsuarioSistema(objeto);
-        objeto.setUsuario(usuario);
-        objeto.setId(usuarioSistemaId.getAndIncrement());
-        objeto.setSituacao(EnumTipoSituacao.ATIVO);
-        usuarioSistemaMap.put(objeto.getId(), objeto);
-        return objeto;
-    }
-
-    @Override
-    public UsuarioSistema alterarMap(Long idObjeto, UsuarioSistema objeto) {
-        usuarioService.verificaExisteMap(objeto.getUsuario().getId());
-        Usuario usuario = usuarioService.buscarPorIdMap(objeto.getUsuario().getId());
-
-        this.verificaExisteEmMap(idObjeto);
-        UsuarioSistema usuarioSistema = this.usuarioSistemaMap.get(idObjeto);
-
-        this.validarUsuarioSistema(objeto);
-
-        usuarioSistema.setUsuario(usuario);
-        usuarioSistema.setEmail(objeto.getEmail());
-        usuarioSistema.setSenha(objeto.getSenha());
-        usuarioSistema.setPassword(objeto.getPassword());
-        usuarioSistema.setSituacao(objeto.getSituacao());
-        this.usuarioSistemaMap.put(idObjeto, usuarioSistema);
-        return usuarioSistema;
-    }
-
-    @Override
-    public UsuarioSistema buscarPorIdMap(Long idObjeto) {
-        this.verificaExisteEmMap(idObjeto);
-        return this.usuarioSistemaMap.get(idObjeto);
-    }
-
-    @Override
-    public List<UsuarioSistema> buscarTodosMap() {
-        return new ArrayList<>(this.usuarioSistemaMap.values());
-    }
-
-    @Override
-    public void excluirMap(Long idObjeto) {
-        this.verificaExisteEmMap(idObjeto);
-        this.usuarioSistemaMap.remove(idObjeto);
-    }
-
-    private void verificaExisteEmMap(Long idUsuario) {
-        if (!this.usuarioSistemaMap.containsKey(idUsuario)) {
-            throw new BusinessException("Usuário não existe");
-        }
-    }
-    public UsuarioSistema inativarMap(Long idUsuario) {
-        try {
-            this.verificaExisteEmMap(idUsuario);
-            UsuarioSistema usuarioSistema = this.usuarioSistemaMap.get(idUsuario);
-            if (EnumTipoSituacao.INATIVO.equals(usuarioSistema.getSituacao())) {
-                throw new UsuarioException("Usuário Sistema já está inativo.");
-            }
-            usuarioSistema.setSituacao(EnumTipoSituacao.INATIVO);
-            this.usuarioSistemaMap.put(idUsuario, usuarioSistema);
-            return usuarioSistema;
-        } catch (UsuarioException e) {
-            throw new BusinessException(e.getMessage());
-        }
-    }
 }

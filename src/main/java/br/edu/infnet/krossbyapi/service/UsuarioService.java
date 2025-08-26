@@ -13,30 +13,24 @@ import br.edu.infnet.krossbyapi.repository.UsuarioRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<Usuario, Long>{
+public class UsuarioService implements ServiceBase<Usuario, Long> {
     private final UsuarioRepository usuarioRepository;
-    private final Map<Long, Usuario> usuarioMap = new ConcurrentHashMap<>();
-
-    public static final AtomicLong usuarioId = new AtomicLong(1);
 
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
     public void validarUsuario(Usuario usuario) {
-        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
-            throw new UsuarioException("Nome do Usuário é obrigatorio!");
+        if (usuario.getNome() != null && usuario.getNome().trim().length() < 4) {
+            throw new UsuarioException("Nome do Usuário é obrigatorio, e deve possuir mínimo 4 letras!");
         }
-        if (usuario.getSobreNome() == null || usuario.getSobreNome().trim().isEmpty()) {
-            throw new UsuarioException("SobreNome do Usuário é obrigatorio!");
+        if (usuario.getSobreNome() != null && usuario.getSobreNome().trim().length() < 5) {
+            throw new UsuarioException("SobreNome do Usuário é obrigatorio, é deve possuir mínimo 5 letras!");
         }
+
     }
 
     @Override
@@ -54,7 +48,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<U
     }
 
     @Override
-    public Usuario incluir(Usuario entidade) throws BusinessException {
+    public Usuario incluir(Usuario entidade) {
         try {
             this.validarUsuario(entidade);
             entidade.setId(null);
@@ -106,62 +100,5 @@ public class UsuarioService implements ServiceBase<Usuario, Long> , ServiceMap<U
         }
         usuario.setSituacao(EnumTipoSituacao.INATIVO);
         return usuarioRepository.save(usuario);
-    }
-
-    @Override
-    public Usuario incluirMap(Usuario objeto) {
-        this.validarUsuario(objeto);
-        objeto.setId(usuarioId.getAndIncrement());
-        objeto.setSituacao(EnumTipoSituacao.ATIVO);
-        usuarioMap.put(objeto.getId(), objeto);
-        return objeto;
-    }
-    public void verificaExisteMap(Long idObjeto) {
-        if (!usuarioMap.containsKey(idObjeto)) {
-            throw new UsuarioException("usuário não encontrado em Map");
-        }
-    }
-
-    @Override
-    public Usuario alterarMap(Long idObjeto, Usuario objeto) {
-        this.verificaExisteMap(idObjeto);
-        Usuario usuario = this.usuarioMap.get(idObjeto);
-        usuario.setNome(objeto.getNome());
-        usuario.setSobreNome(objeto.getSobreNome());
-        usuario.setCpf(objeto.getCpf());
-        usuario.setRg(objeto.getRg());
-        usuario.setTelefone1(objeto.getTelefone1());
-        usuario.setTelefone2(objeto.getTelefone2());
-        usuario.setSituacao(objeto.getSituacao());
-        this.usuarioMap.put(idObjeto, usuario);
-        return usuario;
-    }
-
-    @Override
-    public Usuario buscarPorIdMap(Long idObjeto) {
-        this.verificaExisteMap(idObjeto);
-        return this.usuarioMap.get(idObjeto);
-    }
-
-    @Override
-    public List<Usuario> buscarTodosMap() {
-        return new ArrayList<>(usuarioMap.values());
-    }
-
-    @Override
-    public void excluirMap(Long idObjeto) {
-        this.verificaExisteMap(idObjeto);
-        this.usuarioMap.remove(idObjeto);
-    }
-
-    public Usuario inativarMap(Long idObjeto) {
-        this.verificaExisteMap(idObjeto);
-        Usuario usuario = this.usuarioMap.get(idObjeto);
-        if (EnumTipoSituacao.INATIVO.equals(usuario.getSituacao())) {
-            throw new UsuarioException("usuario em Map já está inativo");
-        }
-        usuario.setSituacao(EnumTipoSituacao.INATIVO);
-        this.usuarioMap.put(idObjeto, usuario);
-        return usuario;
     }
 }

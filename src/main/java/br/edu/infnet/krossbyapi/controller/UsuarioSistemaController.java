@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/usuario-sistema")
-public class UsuarioSistemaController extends ControllerBase<UsuarioSistema, Long> implements ControllerMap<UsuarioSistema, Long>{
+public class UsuarioSistemaController extends ControllerBase<UsuarioSistema, Long> {
 
     private final UsuarioSistemaService service;
 
@@ -55,35 +55,5 @@ public class UsuarioSistemaController extends ControllerBase<UsuarioSistema, Lon
     @PatchMapping(value = "/{id}/inativar")
     public ResponseEntity<UsuarioSistema> inativar(@PathVariable Long id) throws BusinessException {
         return ResponseEntity.ok(service.inativar(id));
-    }
-
-    @Override
-    public UsuarioSistema obterPorIdMap(Long id) {
-        return service.buscarPorIdMap(id);
-    }
-
-    @Override
-    public List<UsuarioSistema> obterListaMap() {
-        return service.buscarTodosMap();
-    }
-
-    @Override
-    public UsuarioSistema incluirMap(UsuarioSistema objeto) {
-        return service.incluirMap(objeto);
-    }
-
-    @Override
-    public UsuarioSistema alterarMap(Long id, UsuarioSistema objeto) {
-        return service.alterarMap(id, objeto);
-    }
-
-    @Override
-    public void excluirMap(Long id) {
-        service.excluirMap(id);
-    }
-
-    @PatchMapping(value = "/map/{id}/inativar")
-    public UsuarioSistema inativarMap(@PathVariable("id") Long id) {
-        return service.inativarMap(id);
     }
 }

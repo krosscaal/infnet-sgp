@@ -7,7 +7,9 @@ package br.edu.infnet.krossbyapi.controller;
 
 import br.edu.infnet.krossbyapi.domain.entity.Usuario;
 import br.edu.infnet.krossbyapi.exception.BusinessException;
+import br.edu.infnet.krossbyapi.exception.UsuarioException;
 import br.edu.infnet.krossbyapi.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/usuario")
-public class UsuarioController extends ControllerBase<Usuario, Long> implements ControllerMap<Usuario, Long>{
+public class UsuarioController extends ControllerBase<Usuario, Long> {
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
@@ -37,12 +39,12 @@ public class UsuarioController extends ControllerBase<Usuario, Long> implements 
     }
 
     @Override
-    protected ResponseEntity<Usuario> acaoIncluir(Usuario dto) throws BusinessException {
+    protected ResponseEntity<Usuario> acaoIncluir(@Valid Usuario dto) throws BusinessException {
         return new ResponseEntity<>(usuarioService.incluir(dto), HttpStatus.CREATED);
     }
 
     @Override
-    protected ResponseEntity<Usuario> acaoAlterar(Long id, Usuario dto) throws BusinessException {
+    protected ResponseEntity<Usuario> acaoAlterar(Long id, @Valid Usuario dto) throws BusinessException {
         return ResponseEntity.ok(usuarioService.alterar(id, dto));
     }
 
@@ -52,37 +54,7 @@ public class UsuarioController extends ControllerBase<Usuario, Long> implements 
     }
 
     @PatchMapping(value = "/{id}/inativar")
-    public ResponseEntity<Usuario> inativar(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Usuario> inativar(@PathVariable Long id) throws UsuarioException {
         return ResponseEntity.ok(usuarioService.inativar(id));
-    }
-
-    @Override
-    public Usuario obterPorIdMap(Long id) {
-        return usuarioService.buscarPorIdMap(id);
-    }
-
-    @Override
-    public List<Usuario> obterListaMap() {
-        return usuarioService.buscarTodosMap();
-    }
-
-    @Override
-    public Usuario incluirMap(Usuario objeto) {
-        return usuarioService.incluirMap(objeto);
-    }
-
-    @Override
-    public Usuario alterarMap(Long id, Usuario objeto) {
-        return usuarioService.alterarMap(id, objeto);
-    }
-
-    @Override
-    public void excluirMap(Long id) {
-        usuarioService.excluirMap(id);
-    }
-
-    @PatchMapping(value = "/map/{id}/instivar")
-    public Usuario inativarMap(@PathVariable("id") Long id) {
-        return usuarioService.inativarMap(id);
     }
 }

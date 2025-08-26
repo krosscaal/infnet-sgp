@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/moradia")
-public class MoradiaController extends ControllerBase<Moradia, Long> implements ControllerMap<Moradia, Long>{
+public class MoradiaController extends ControllerBase<Moradia, Long> {
     private final MoradiaService moradiaService;
 
     public MoradiaController(MoradiaService moradiaService) {
@@ -55,35 +55,5 @@ public class MoradiaController extends ControllerBase<Moradia, Long> implements 
     @Override
     protected void acaoExcluir(Long id) throws BusinessException {
         moradiaService.excluir(id);
-    }
-
-    @Override
-    public Moradia obterPorIdMap(Long id) {
-        return moradiaService.buscarPorIdMap(id);
-    }
-
-    @Override
-    public List<Moradia> obterListaMap() {
-        return moradiaService.buscarTodosMap();
-    }
-
-    @Override
-    public Moradia incluirMap(Moradia objeto) {
-        return moradiaService.incluirMap(objeto);
-    }
-
-    @Override
-    public Moradia alterarMap(Long id, Moradia objeto) {
-        return moradiaService.alterarMap(id, objeto);
-    }
-
-    @Override
-    public void excluirMap(Long id) {
-        moradiaService.excluirMap(id);
-    }
-
-    @PatchMapping(value = "/map/{id}/instivar")
-    public Moradia inativarMap(@PathVariable("id") Long id) {
-        return moradiaService.inativarMap(id);
     }
 }

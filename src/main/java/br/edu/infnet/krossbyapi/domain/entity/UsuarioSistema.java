@@ -14,8 +14,11 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import static br.edu.infnet.krossbyapi.util.MensagemCenter.*;
 
 @Setter
 @Getter
@@ -23,22 +26,32 @@ import lombok.Setter;
 @Table(name = "tb_usuario_sistema")
 public class UsuarioSistema extends EntidadeBase {
 
+    @NotNull(message = NAO_NULL)
     @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
     private Usuario usuario;
 
+    @NotNull(message = NAO_NULL)
     @Enumerated(EnumType.STRING)
     private EnumTipoUsuarioSistema tipoUsuarioSistema;
 
+    @Size(max = 80, message = "O tamanho deve ser menor ou igual a 80 caracteres.")
+    @NotBlank(message = E_UM_CAMPO_OBRIGATORIO)
+    @Email(message = FORMATO_E_MAIL_INCORRETO)
     @Column(nullable = false, length = 80)
     private String email;
 
+    @Size(max = 100, message = "O tamanho deve ser menor ou igual a 100 caracteres.")
+    @NotBlank(message = E_UM_CAMPO_OBRIGATORIO)
     @Column(length = 100)
     private String senha;
 
+    @Size(max = 100, message = "O tamanho deve ser menor ou igual a 100 caracteres.")
+    @NotBlank(message = E_UM_CAMPO_OBRIGATORIO)
     @Column(length = 100)
     private String password;
 
+    @NotNull(message = NAO_NULL)
     @Enumerated(EnumType.STRING)
     private EnumTipoSituacao situacao;
 
