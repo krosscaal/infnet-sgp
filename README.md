@@ -20,5 +20,9 @@
       funcionarios, prestadores de serviço entregadores).
     - registro de encomendas que chegam ao condominio para os moradores.
     - gerenciamento das encomendas.
-    - conectar-se com outra aplicação externa de agendamento de visitas.
+    - conectar-se com outra aplicação externa Sistema Agendamento de visitantes.
+
+## Projetos Relacionados
+[Sistema Agendamento de visitantes](https://github.com/krosscaal/infnet-agendamentoapi)
+
 
