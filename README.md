@@ -22,5 +22,3 @@
     - gerenciamento das encomendas.
     - conectar-se com outra aplicação externa de agendamento de visitas.
 
-## Autor
-    Krossby
